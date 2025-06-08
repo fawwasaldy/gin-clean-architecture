@@ -1,21 +1,68 @@
 package main
 
 import (
-	"fmt"
+	"github.com/gin-gonic/gin"
+	"kpl-base/application/service"
+	domain_user "kpl-base/domain/user"
+	"kpl-base/infrastructure/adapter/file_storage"
+	"kpl-base/infrastructure/database/config"
+	infrastructure_refresh_token "kpl-base/infrastructure/database/refresh_token"
+	"kpl-base/infrastructure/database/transaction"
+	infrastructure_user "kpl-base/infrastructure/database/user"
+	"kpl-base/presentation/controller"
+	"kpl-base/presentation/middleware"
+	"kpl-base/presentation/route"
+	"log"
+	"os"
 )
 
-//TIP <p>To run your code, right-click the code and select <b>Run</b>.</p> <p>Alternatively, click
-// the <icon src="AllIcons.Actions.Execute"/> icon in the gutter and select the <b>Run</b> menu item from here.</p>
+func run(server *gin.Engine) {
+	server.Static("/assets", "./assets")
+
+	if os.Getenv("IS_LOGGER") == "true" {
+		route.LoggerRoute(server)
+	}
+
+	port := os.Getenv("GOLANG_PORT")
+	if port == "" {
+		port = "8888"
+	}
+
+	var serve string
+	if os.Getenv("APP_ENV") == "localhost" {
+		serve = "0.0.0.0:" + port
+	} else {
+		serve = ":" + port
+	}
+
+	if err := server.Run(serve); err != nil {
+		log.Fatalf("error running server: %v", err)
+	}
+}
 
 func main() {
-	//TIP <p>Press <shortcut actionId="ShowIntentionActions"/> when your caret is at the underlined text
-	// to see how GoLand suggests fixing the warning.</p><p>Alternatively, if available, click the lightbulb to view possible fixes.</p>
-	s := "gopher"
-	fmt.Printf("Hello and welcome, %s!\n", s)
+	db := config.SetUpDatabaseConnection()
 
-	for i := 1; i <= 5; i++ {
-		//TIP <p>To start your debugging session, right-click your code in the editor and select the Debug option.</p> <p>We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-		// for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.</p>
-		fmt.Println("i =", 100/i)
-	}
+	jwtService := service.NewJWTService()
+
+	transactionRepository := transaction.NewRepository(db)
+	userRepository := infrastructure_user.NewRepository(transactionRepository)
+	refreshTokenRepository := infrastructure_refresh_token.NewRepository(transactionRepository)
+
+	fileStorage := file_storage.NewLocalAdapter()
+
+	userDomainService := domain_user.NewService(fileStorage)
+
+	userService := service.NewUserService(userRepository, refreshTokenRepository, *userDomainService, jwtService, transactionRepository)
+
+	userController := controller.NewUserController(userService)
+
+	defer config.CloseDatabaseConnection(db)
+
+	server := gin.Default()
+	server.Use(middleware.CORSMiddleware())
+
+	route.UserRoute(server, userController, jwtService)
+
+	run(server)
 }
