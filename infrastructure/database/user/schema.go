@@ -37,26 +37,14 @@ func EntityToSchema(entity user.User) User {
 }
 
 func SchemaToEntity(schema User) user.User {
-	password, err := user.NewPasswordFromHash(schema.Password)
-	if err != nil {
-		panic("invalid password in user model: " + err.Error())
-	}
-	role, err := user.NewRole(schema.Role)
-	if err != nil {
-		panic("invalid role in user model: " + err.Error())
-	}
-	imageUrl, err := shared.NewURL(schema.ImageUrl)
-	if err != nil {
-		panic("invalid image URL in user model: " + err.Error())
-	}
 	return user.User{
-		ID:          identity.NewID(schema.ID),
+		ID:          identity.NewIDFromSchema(schema.ID),
 		Name:        schema.Name,
 		Email:       schema.Email,
 		PhoneNumber: schema.PhoneNumber,
-		Password:    password,
-		Role:        role,
-		ImageUrl:    imageUrl,
+		Password:    user.NewPasswordFromSchema(schema.Password),
+		Role:        user.NewRoleFromSchema(schema.Role),
+		ImageUrl:    shared.NewURLFromSchema(schema.ImageUrl),
 		IsVerified:  schema.IsVerified,
 		Timestamp: shared.Timestamp{
 			CreatedAt: schema.CreatedAt,

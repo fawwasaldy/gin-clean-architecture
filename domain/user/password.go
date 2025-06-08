@@ -26,14 +26,10 @@ func NewPassword(password string) (Password, error) {
 	}, nil
 }
 
-func NewPasswordFromHash(hashedPassword string) (Password, error) {
-	if len(hashedPassword) == 0 {
-		return Password{}, fmt.Errorf("hashed password cannot be empty")
-	}
-
+func NewPasswordFromSchema(hashedPassword string) Password {
 	return Password{
 		Password: hashedPassword,
-	}, nil
+	}
 }
 
 func (p Password) IsPasswordMatch(plainPassword []byte) (bool, error) {

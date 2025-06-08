@@ -15,6 +15,12 @@ func NewURL(path string) (URL, error) {
 	}, nil
 }
 
+func NewURLFromSchema(path string) URL {
+	return URL{
+		Path: path,
+	}
+}
+
 func isValidURL(url string) bool {
 	return len(url) > 0
 }

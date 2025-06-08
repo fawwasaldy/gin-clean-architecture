@@ -29,10 +29,9 @@ func EntityToSchema(entity refresh_token.RefreshToken) RefreshToken {
 }
 
 func SchemaToEntity(schema RefreshToken) refresh_token.RefreshToken {
-
 	return refresh_token.RefreshToken{
-		ID:        identity.NewID(schema.ID),
-		UserID:    identity.NewID(schema.UserID),
+		ID:        identity.NewIDFromSchema(schema.ID),
+		UserID:    identity.NewIDFromSchema(schema.UserID),
 		Token:     schema.Token,
 		ExpiresAt: schema.ExpiresAt,
 		Timestamp: shared.Timestamp{

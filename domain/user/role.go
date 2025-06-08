@@ -27,6 +27,12 @@ func NewRole(name string) (Role, error) {
 	}, nil
 }
 
+func NewRoleFromSchema(name string) Role {
+	return Role{
+		Name: name,
+	}
+}
+
 func isValidRole(name string) bool {
 	for _, role := range Roles {
 		if role.Name == name {
