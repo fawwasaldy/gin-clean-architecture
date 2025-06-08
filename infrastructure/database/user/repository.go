@@ -46,7 +46,7 @@ func (r *repository) GetUserByID(ctx context.Context, tx interface{}, id string)
 		db = r.db.DB()
 	}
 
-	var userSchema Schema
+	var userSchema User
 	if err = db.WithContext(ctx).Where("id = ?", id).Take(&userSchema).Error; err != nil {
 		return user.User{}, err
 	}
@@ -66,7 +66,7 @@ func (r *repository) GetUserByEmail(ctx context.Context, tx interface{}, email s
 		db = r.db.DB()
 	}
 
-	var userSchema Schema
+	var userSchema User
 	if err = db.WithContext(ctx).Where("email = ?", email).Take(&userSchema).Error; err != nil {
 		return user.User{}, err
 	}
@@ -86,7 +86,7 @@ func (r *repository) CheckEmail(ctx context.Context, tx interface{}, email strin
 		db = r.db.DB()
 	}
 
-	var userSchema Schema
+	var userSchema User
 	if err = db.WithContext(ctx).Where("email = ?", email).Take(&userSchema).Error; err != nil {
 		return user.User{}, false, err
 	}
@@ -126,7 +126,7 @@ func (r *repository) Delete(ctx context.Context, tx interface{}, id string) erro
 		db = r.db.DB()
 	}
 
-	if err = db.WithContext(ctx).Where("id = ?", id).Delete(&Schema{}).Error; err != nil {
+	if err = db.WithContext(ctx).Where("id = ?", id).Delete(&User{}).Error; err != nil {
 		return err
 	}
 

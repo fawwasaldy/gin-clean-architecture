@@ -47,7 +47,7 @@ func (r repository) FindByToken(ctx context.Context, tx interface{}, token strin
 		db = r.db.DB()
 	}
 
-	var refreshTokenSchema Schema
+	var refreshTokenSchema RefreshToken
 	if err = db.WithContext(ctx).Where("token = ?", token).Take(&refreshTokenSchema).Error; err != nil {
 		return refresh_token.RefreshToken{}, err
 	}
@@ -67,7 +67,7 @@ func (r repository) DeleteByUserID(ctx context.Context, tx interface{}, userID s
 		db = r.db.DB()
 	}
 
-	if err = db.WithContext(ctx).Where("user_id = ?", userID).Delete(&Schema{}).Error; err != nil {
+	if err = db.WithContext(ctx).Where("user_id = ?", userID).Delete(&RefreshToken{}).Error; err != nil {
 		return err
 	}
 
@@ -85,7 +85,7 @@ func (r repository) DeleteByToken(ctx context.Context, tx interface{}, token str
 		db = r.db.DB()
 	}
 
-	if err = db.WithContext(ctx).Where("token = ?", token).Delete(&Schema{}).Error; err != nil {
+	if err = db.WithContext(ctx).Where("token = ?", token).Delete(&RefreshToken{}).Error; err != nil {
 		return err
 	}
 
@@ -103,7 +103,7 @@ func (r repository) DeleteExpired(ctx context.Context, tx interface{}) error {
 		db = r.db.DB()
 	}
 
-	if err = db.WithContext(ctx).Where("expires_at < ?", time.Now()).Delete(&Schema{}).Error; err != nil {
+	if err = db.WithContext(ctx).Where("expires_at < ?", time.Now()).Delete(&RefreshToken{}).Error; err != nil {
 		return err
 	}
 

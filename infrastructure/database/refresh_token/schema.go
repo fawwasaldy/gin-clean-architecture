@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-type Schema struct {
+type RefreshToken struct {
 	ID        uuid.UUID `gorm:"primaryKey;type:uuid;default:uuid_generate_v4();column:id"`
 	UserID    uuid.UUID `gorm:"type:uuid;not null;column:user_id"`
 	Token     string    `gorm:"type:varchar(255);not null;uniqueIndex;column:token"`
@@ -17,8 +17,8 @@ type Schema struct {
 	UpdatedAt time.Time `gorm:"type:timestamp with time zone;column:updated_at"`
 }
 
-func EntityToSchema(entity refresh_token.RefreshToken) Schema {
-	return Schema{
+func EntityToSchema(entity refresh_token.RefreshToken) RefreshToken {
+	return RefreshToken{
 		ID:        entity.ID.ID,
 		UserID:    entity.UserID.ID,
 		Token:     entity.Token,
@@ -28,7 +28,7 @@ func EntityToSchema(entity refresh_token.RefreshToken) Schema {
 	}
 }
 
-func SchemaToEntity(schema Schema) refresh_token.RefreshToken {
+func SchemaToEntity(schema RefreshToken) refresh_token.RefreshToken {
 
 	return refresh_token.RefreshToken{
 		ID:        identity.NewID(schema.ID),

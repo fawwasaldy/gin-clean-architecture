@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-type Schema struct {
+type User struct {
 	ID          uuid.UUID `gorm:"type:uuid;primary_key;default:uuid_generate_v4();column:id"`
 	Name        string    `gorm:"type:varchar(100);not null;column:name"`
 	Email       string    `gorm:"type:varchar(255);uniqueIndex;not null;column:email"`
@@ -21,8 +21,8 @@ type Schema struct {
 	UpdatedAt   time.Time `gorm:"type:timestamp with time zone;column:updated_at"`
 }
 
-func EntityToSchema(entity user.User) Schema {
-	return Schema{
+func EntityToSchema(entity user.User) User {
+	return User{
 		ID:          entity.ID.ID,
 		Name:        entity.Name,
 		Email:       entity.Email,
@@ -36,8 +36,8 @@ func EntityToSchema(entity user.User) Schema {
 	}
 }
 
-func SchemaToEntity(schema Schema) user.User {
-	password, err := user.NewPassword(schema.Password)
+func SchemaToEntity(schema User) user.User {
+	password, err := user.NewPasswordFromHash(schema.Password)
 	if err != nil {
 		panic("invalid password in user model: " + err.Error())
 	}
