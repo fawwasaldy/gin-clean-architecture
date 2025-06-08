@@ -102,8 +102,8 @@ func (s *userService) Register(ctx context.Context, req request.UserRegister) (r
 		Name:        registeredUser.Name,
 		Email:       registeredUser.Email,
 		PhoneNumber: registeredUser.PhoneNumber,
-		Role:        registeredUser.Role.Name(),
-		ImageUrl:    registeredUser.ImageUrl.Path(),
+		Role:        registeredUser.Role.Name,
+		ImageUrl:    registeredUser.ImageUrl.Path,
 		IsVerified:  registeredUser.IsVerified,
 	}, nil
 }
@@ -119,8 +119,8 @@ func (s *userService) GetUserByID(ctx context.Context, userID string) (response.
 		Name:        retrievedUser.Name,
 		Email:       retrievedUser.Email,
 		PhoneNumber: retrievedUser.PhoneNumber,
-		Role:        retrievedUser.Role.Name(),
-		ImageUrl:    retrievedUser.ImageUrl.Path(),
+		Role:        retrievedUser.Role.Name,
+		ImageUrl:    retrievedUser.ImageUrl.Path,
 		IsVerified:  retrievedUser.IsVerified,
 	}, nil
 }
@@ -136,8 +136,8 @@ func (s *userService) GetUserByEmail(ctx context.Context, email string) (respons
 		Name:        retrievedUser.Name,
 		Email:       retrievedUser.Email,
 		PhoneNumber: retrievedUser.PhoneNumber,
-		Role:        retrievedUser.Role.Name(),
-		ImageUrl:    retrievedUser.ImageUrl.Path(),
+		Role:        retrievedUser.Role.Name,
+		ImageUrl:    retrievedUser.ImageUrl.Path,
 		IsVerified:  retrievedUser.IsVerified,
 	}, nil
 }
@@ -166,7 +166,7 @@ func (s *userService) Update(ctx context.Context, userID string, req request.Use
 		Name:        updatedUser.Name,
 		Email:       updatedUser.Email,
 		PhoneNumber: updatedUser.PhoneNumber,
-		Role:        updatedUser.Role.Name(),
+		Role:        updatedUser.Role.Name,
 		IsVerified:  updatedUser.IsVerified,
 	}, nil
 }
@@ -224,7 +224,7 @@ func (s *userService) Verify(ctx context.Context, req request.UserLogin) (respon
 		return response.RefreshToken{}, err
 	}
 
-	accessToken := s.jwtService.GenerateAccessToken(retrievedUser.ID.String(), retrievedUser.Role.Name())
+	accessToken := s.jwtService.GenerateAccessToken(retrievedUser.ID.String(), retrievedUser.Role.Name)
 
 	refreshTokenString, expiresAt := s.jwtService.GenerateRefreshToken()
 
@@ -250,7 +250,7 @@ func (s *userService) Verify(ctx context.Context, req request.UserLogin) (respon
 	return response.RefreshToken{
 		AccessToken:  accessToken,
 		RefreshToken: refreshTokenString,
-		Role:         retrievedUser.Role.Name(),
+		Role:         retrievedUser.Role.Name,
 	}, nil
 }
 
@@ -283,7 +283,7 @@ func (s *userService) RefreshToken(ctx context.Context, req request.RefreshToken
 		return response.RefreshToken{}, user.ErrorUserNotFound
 	}
 
-	accessToken := s.jwtService.GenerateAccessToken(retrievedUser.ID.String(), retrievedUser.Role.Name())
+	accessToken := s.jwtService.GenerateAccessToken(retrievedUser.ID.String(), retrievedUser.Role.Name)
 
 	refreshTokenString, expiresAt := s.jwtService.GenerateRefreshToken()
 
@@ -309,7 +309,7 @@ func (s *userService) RefreshToken(ctx context.Context, req request.RefreshToken
 	return response.RefreshToken{
 		AccessToken:  accessToken,
 		RefreshToken: refreshTokenString,
-		Role:         retrievedUser.Role.Name(),
+		Role:         retrievedUser.Role.Name,
 	}, nil
 }
 

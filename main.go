@@ -2,7 +2,9 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 	"kpl-base/application/service"
+	"kpl-base/command"
 	domain_user "kpl-base/domain/user"
 	"kpl-base/infrastructure/adapter/file_storage"
 	"kpl-base/infrastructure/database/config"
@@ -15,6 +17,15 @@ import (
 	"log"
 	"os"
 )
+
+func args(db *gorm.DB) bool {
+	if len(os.Args) > 1 {
+		flag := command.Commands(db)
+		return flag
+	}
+
+	return true
+}
 
 func run(server *gin.Engine) {
 	server.Static("/assets", "./assets")
@@ -58,6 +69,10 @@ func main() {
 	userController := controller.NewUserController(userService)
 
 	defer config.CloseDatabaseConnection(db)
+
+	if !args(db) {
+		return
+	}
 
 	server := gin.Default()
 	server.Use(middleware.CORSMiddleware())

@@ -15,25 +15,21 @@ var (
 )
 
 type Role struct {
-	name string
+	Name string
 }
 
 func NewRole(name string) (Role, error) {
 	if !isValidRole(name) {
-		return Role{}, fmt.Errorf("invalid role name")
+		return Role{}, fmt.Errorf("invalid role Name")
 	}
 	return Role{
-		name: name,
+		Name: name,
 	}, nil
-}
-
-func (r Role) Name() string {
-	return r.name
 }
 
 func isValidRole(name string) bool {
 	for _, role := range Roles {
-		if role.Name() == name {
+		if role.Name == name {
 			return true
 		}
 	}

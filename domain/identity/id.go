@@ -3,19 +3,15 @@ package identity
 import "github.com/google/uuid"
 
 type ID struct {
-	id uuid.UUID
+	ID uuid.UUID
 }
 
-func NewID() ID {
+func NewID(id uuid.UUID) ID {
 	return ID{
-		id: uuid.New(),
+		ID: id,
 	}
 }
 
-func (i ID) Id() uuid.UUID {
-	return i.id
-}
-
 func (i ID) String() string {
-	return i.id.String()
+	return i.ID.String()
 }

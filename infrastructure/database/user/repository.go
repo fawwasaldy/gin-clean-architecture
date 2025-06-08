@@ -26,11 +26,13 @@ func (r *repository) Register(ctx context.Context, tx interface{}, userEntity us
 		db = r.db.DB()
 	}
 
-	if err := db.WithContext(ctx).Create(&userEntity).Error; err != nil {
+	userSchema := EntityToSchema(userEntity)
+	if err = db.WithContext(ctx).Create(&userSchema).Error; err != nil {
 		return user.User{}, err
 	}
 
-	return user.User{}, nil
+	userEntity = SchemaToEntity(userSchema)
+	return userEntity, nil
 }
 
 func (r *repository) GetUserByID(ctx context.Context, tx interface{}, id string) (user.User, error) {
@@ -44,11 +46,12 @@ func (r *repository) GetUserByID(ctx context.Context, tx interface{}, id string)
 		db = r.db.DB()
 	}
 
-	var userEntity user.User
-	if err := db.WithContext(ctx).Where("id = ?", id).Take(&userEntity).Error; err != nil {
+	var userSchema Schema
+	if err = db.WithContext(ctx).Where("id = ?", id).Take(&userSchema).Error; err != nil {
 		return user.User{}, err
 	}
 
+	userEntity := SchemaToEntity(userSchema)
 	return userEntity, nil
 }
 
@@ -63,11 +66,12 @@ func (r *repository) GetUserByEmail(ctx context.Context, tx interface{}, email s
 		db = r.db.DB()
 	}
 
-	var userEntity user.User
-	if err := db.WithContext(ctx).Where("email = ?", email).Take(&userEntity).Error; err != nil {
+	var userSchema Schema
+	if err = db.WithContext(ctx).Where("email = ?", email).Take(&userSchema).Error; err != nil {
 		return user.User{}, err
 	}
 
+	userEntity := SchemaToEntity(userSchema)
 	return userEntity, nil
 }
 
@@ -82,11 +86,12 @@ func (r *repository) CheckEmail(ctx context.Context, tx interface{}, email strin
 		db = r.db.DB()
 	}
 
-	var userEntity user.User
-	if err := db.WithContext(ctx).Where("email = ?", email).Take(&userEntity).Error; err != nil {
+	var userSchema Schema
+	if err = db.WithContext(ctx).Where("email = ?", email).Take(&userSchema).Error; err != nil {
 		return user.User{}, false, err
 	}
 
+	userEntity := SchemaToEntity(userSchema)
 	return userEntity, true, nil
 }
 
@@ -101,10 +106,12 @@ func (r *repository) Update(ctx context.Context, tx interface{}, userEntity user
 		db = r.db.DB()
 	}
 
-	if err := db.WithContext(ctx).Updates(&userEntity).Error; err != nil {
+	userSchema := EntityToSchema(userEntity)
+	if err = db.WithContext(ctx).Updates(&userSchema).Error; err != nil {
 		return user.User{}, err
 	}
 
+	userEntity = SchemaToEntity(userSchema)
 	return userEntity, nil
 }
 
@@ -119,7 +126,7 @@ func (r *repository) Delete(ctx context.Context, tx interface{}, id string) erro
 		db = r.db.DB()
 	}
 
-	if err := db.WithContext(ctx).Where("id = ?", id).Delete(&user.User{}).Error; err != nil {
+	if err = db.WithContext(ctx).Where("id = ?", id).Delete(&Schema{}).Error; err != nil {
 		return err
 	}
 

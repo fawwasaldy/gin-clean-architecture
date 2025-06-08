@@ -8,7 +8,7 @@ import (
 const BcryptCost = 10
 
 type Password struct {
-	password string
+	Password string
 }
 
 func NewPassword(password string) (Password, error) {
@@ -22,12 +22,12 @@ func NewPassword(password string) (Password, error) {
 	}
 
 	return Password{
-		password: hashedPassword,
+		Password: hashedPassword,
 	}, nil
 }
 
 func (p Password) IsPasswordMatch(plainPassword []byte) (bool, error) {
-	err := bcrypt.CompareHashAndPassword([]byte(p.password), plainPassword)
+	err := bcrypt.CompareHashAndPassword([]byte(p.Password), plainPassword)
 	if err != nil {
 		return false, err
 	}

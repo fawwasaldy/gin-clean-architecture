@@ -27,10 +27,12 @@ func (r repository) Create(ctx context.Context, tx interface{}, refreshTokenEnti
 		db = r.db.DB()
 	}
 
-	if err := db.WithContext(ctx).Create(&refreshTokenEntity).Error; err != nil {
+	refreshTokenSchema := EntityToSchema(refreshTokenEntity)
+	if err = db.WithContext(ctx).Create(&refreshTokenSchema).Error; err != nil {
 		return refresh_token.RefreshToken{}, err
 	}
 
+	refreshTokenEntity = SchemaToEntity(refreshTokenSchema)
 	return refreshTokenEntity, nil
 }
 
@@ -45,11 +47,12 @@ func (r repository) FindByToken(ctx context.Context, tx interface{}, token strin
 		db = r.db.DB()
 	}
 
-	var refreshTokenEntity refresh_token.RefreshToken
-	if err := db.WithContext(ctx).Where("token = ?", token).Take(&refreshTokenEntity).Error; err != nil {
+	var refreshTokenSchema Schema
+	if err = db.WithContext(ctx).Where("token = ?", token).Take(&refreshTokenSchema).Error; err != nil {
 		return refresh_token.RefreshToken{}, err
 	}
 
+	refreshTokenEntity := SchemaToEntity(refreshTokenSchema)
 	return refreshTokenEntity, nil
 }
 
@@ -64,7 +67,7 @@ func (r repository) DeleteByUserID(ctx context.Context, tx interface{}, userID s
 		db = r.db.DB()
 	}
 
-	if err := db.WithContext(ctx).Where("user_id = ?", userID).Delete(&refresh_token.RefreshToken{}).Error; err != nil {
+	if err = db.WithContext(ctx).Where("user_id = ?", userID).Delete(&Schema{}).Error; err != nil {
 		return err
 	}
 
@@ -82,7 +85,7 @@ func (r repository) DeleteByToken(ctx context.Context, tx interface{}, token str
 		db = r.db.DB()
 	}
 
-	if err := db.WithContext(ctx).Where("token = ?", token).Delete(&refresh_token.RefreshToken{}).Error; err != nil {
+	if err = db.WithContext(ctx).Where("token = ?", token).Delete(&Schema{}).Error; err != nil {
 		return err
 	}
 
@@ -100,7 +103,7 @@ func (r repository) DeleteExpired(ctx context.Context, tx interface{}) error {
 		db = r.db.DB()
 	}
 
-	if err := db.WithContext(ctx).Where("expires_at < ?", time.Now()).Delete(&refresh_token.RefreshToken{}).Error; err != nil {
+	if err = db.WithContext(ctx).Where("expires_at < ?", time.Now()).Delete(&Schema{}).Error; err != nil {
 		return err
 	}
 

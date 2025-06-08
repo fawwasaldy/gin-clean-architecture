@@ -3,7 +3,7 @@ package shared
 import "fmt"
 
 type URL struct {
-	path string
+	Path string
 }
 
 func NewURL(path string) (URL, error) {
@@ -11,14 +11,10 @@ func NewURL(path string) (URL, error) {
 		return URL{}, fmt.Errorf("invalid URL: %s", path)
 	}
 	return URL{
-		path: path,
+		Path: path,
 	}, nil
 }
 
 func isValidURL(url string) bool {
 	return len(url) > 0
-}
-
-func (u URL) Path() string {
-	return u.path
 }

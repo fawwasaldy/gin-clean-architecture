@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta Name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logs</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/a82697a287.js" crossorigin="anonymous"></script>
@@ -52,7 +52,7 @@
             font-weight: 600;
             padding-right: 2.5rem;
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%234f46e5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%234f46e5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/Path%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 0.75rem center;
             background-size: 1.25rem;
@@ -144,7 +144,7 @@
             </button>
 
             <div class="relative">
-                <select id="month" onchange="changeMonth()" class="custom-select w-48 px-6 py-3 rounded-xl text-sm font-medium">
+                <select ID="month" onchange="changeMonth()" class="custom-select w-48 px-6 py-3 rounded-xl text-sm font-medium">
                     <option value="january" {{ if eq .Month "january" }}selected{{ end }}>January</option>
                     <option value="february" {{ if eq .Month "february" }}selected{{ end }}>February</option>
                     <option value="march" {{ if eq .Month "march" }}selected{{ end }}>March</option>
