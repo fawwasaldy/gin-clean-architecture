@@ -10,12 +10,14 @@ import (
 	"kpl-base/domain/shared"
 	"kpl-base/domain/user"
 	"kpl-base/infrastructure/database/validation"
+	"kpl-base/platform/pagination"
 	"time"
 )
 
 type (
 	UserService interface {
 		Register(ctx context.Context, req request.UserRegister) (response.UserCreate, error)
+		GetAllUsersWithPagination(ctx context.Context, req pagination.Request) (pagination.ResponseWithData, error)
 		GetUserByID(ctx context.Context, userID string) (response.User, error)
 		GetUserByEmail(ctx context.Context, email string) (response.User, error)
 		Update(ctx context.Context, userID string, req request.UserUpdate) (response.UserUpdate, error)
@@ -106,6 +108,36 @@ func (s *userService) Register(ctx context.Context, req request.UserRegister) (r
 		ImageUrl:    registeredUser.ImageUrl.Path,
 		IsVerified:  registeredUser.IsVerified,
 	}, nil
+}
+
+func (s *userService) GetAllUsersWithPagination(ctx context.Context, req pagination.Request) (pagination.ResponseWithData, error) {
+	retrievedData, err := s.userRepository.GetAllUsersWithPagination(ctx, nil, req)
+	if err != nil {
+		return pagination.ResponseWithData{}, user.ErrorGetAllUsers
+	}
+
+	data := make([]any, 0, len(retrievedData.Data))
+	for _, retrievedUser := range retrievedData.Data {
+		userEntity, ok := retrievedUser.(user.User)
+		if !ok {
+			return pagination.ResponseWithData{}, errors.New("failed to cast retrieved data to user.User")
+		}
+		data = append(data, response.User{
+			ID:          userEntity.ID.String(),
+			Name:        userEntity.Name,
+			Email:       userEntity.Email,
+			PhoneNumber: userEntity.PhoneNumber,
+			Role:        userEntity.Role.Name,
+			ImageUrl:    userEntity.ImageUrl.Path,
+			IsVerified:  userEntity.IsVerified,
+		})
+	}
+
+	retrievedData = pagination.ResponseWithData{
+		Data:     data,
+		Response: retrievedData.Response,
+	}
+	return retrievedData, nil
 }
 
 func (s *userService) GetUserByID(ctx context.Context, userID string) (response.User, error) {
