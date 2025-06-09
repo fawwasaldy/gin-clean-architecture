@@ -248,6 +248,9 @@ func (s *userService) Verify(ctx context.Context, req request.UserLogin) (respon
 	}
 
 	defer func() {
+		if r := recover(); r != nil {
+			err = RecoveredFromPanic(r)
+		}
 		validatedTransaction.CommitOrRollback(ctx, tx, err)
 	}()
 
@@ -303,6 +306,9 @@ func (s *userService) RefreshToken(ctx context.Context, req request.RefreshToken
 	}
 
 	defer func() {
+		if r := recover(); r != nil {
+			err = RecoveredFromPanic(r)
+		}
 		validatedTransaction.CommitOrRollback(ctx, tx, err)
 	}()
 
@@ -362,6 +368,9 @@ func (s *userService) RevokeRefreshToken(ctx context.Context, userID string) err
 	}
 
 	defer func() {
+		if r := recover(); r != nil {
+			err = RecoveredFromPanic(r)
+		}
 		validatedTransaction.CommitOrRollback(ctx, tx, err)
 	}()
 
