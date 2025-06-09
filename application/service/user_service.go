@@ -116,6 +116,27 @@ func (s *userService) GetAllUsersWithPagination(ctx context.Context, req paginat
 		return pagination.ResponseWithData{}, user.ErrorGetAllUsers
 	}
 
+	data := make([]any, 0, len(retrievedData.Data))
+	for _, retrievedUser := range retrievedData.Data {
+		userEntity, ok := retrievedUser.(user.User)
+		if !ok {
+			return pagination.ResponseWithData{}, errors.New("failed to cast retrieved data to user.User")
+		}
+		data = append(data, response.User{
+			ID:          userEntity.ID.String(),
+			Name:        userEntity.Name,
+			Email:       userEntity.Email,
+			PhoneNumber: userEntity.PhoneNumber,
+			Role:        userEntity.Role.Name,
+			ImageUrl:    userEntity.ImageUrl.Path,
+			IsVerified:  userEntity.IsVerified,
+		})
+	}
+
+	retrievedData = pagination.ResponseWithData{
+		Data:     data,
+		Response: retrievedData.Response,
+	}
 	return retrievedData, nil
 }
 
