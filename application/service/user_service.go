@@ -10,12 +10,14 @@ import (
 	"kpl-base/domain/shared"
 	"kpl-base/domain/user"
 	"kpl-base/infrastructure/database/validation"
+	"kpl-base/platform/pagination"
 	"time"
 )
 
 type (
 	UserService interface {
 		Register(ctx context.Context, req request.UserRegister) (response.UserCreate, error)
+		GetAllUsersWithPagination(ctx context.Context, req pagination.Request) (pagination.ResponseWithData, error)
 		GetUserByID(ctx context.Context, userID string) (response.User, error)
 		GetUserByEmail(ctx context.Context, email string) (response.User, error)
 		Update(ctx context.Context, userID string, req request.UserUpdate) (response.UserUpdate, error)
@@ -106,6 +108,15 @@ func (s *userService) Register(ctx context.Context, req request.UserRegister) (r
 		ImageUrl:    registeredUser.ImageUrl.Path,
 		IsVerified:  registeredUser.IsVerified,
 	}, nil
+}
+
+func (s *userService) GetAllUsersWithPagination(ctx context.Context, req pagination.Request) (pagination.ResponseWithData, error) {
+	retrievedData, err := s.userRepository.GetAllUsersWithPagination(ctx, nil, req)
+	if err != nil {
+		return pagination.ResponseWithData{}, user.ErrorGetAllUsers
+	}
+
+	return retrievedData, nil
 }
 
 func (s *userService) GetUserByID(ctx context.Context, userID string) (response.User, error) {

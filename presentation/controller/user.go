@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"kpl-base/application/request"
 	"kpl-base/application/service"
+	"kpl-base/platform/pagination"
 	"kpl-base/presentation"
 	"kpl-base/presentation/message"
 	"net/http"
@@ -15,6 +16,7 @@ type (
 		Login(ctx *gin.Context)
 		Me(ctx *gin.Context)
 		RefreshToken(ctx *gin.Context)
+		GetAll(ctx *gin.Context)
 		Update(ctx *gin.Context)
 		Delete(ctx *gin.Context)
 	}
@@ -97,6 +99,30 @@ func (c *userController) RefreshToken(ctx *gin.Context) {
 	}
 
 	res := presentation.BuildResponseSuccess(message.SuccessRefreshToken, result)
+	ctx.JSON(http.StatusOK, res)
+}
+
+func (c *userController) GetAll(ctx *gin.Context) {
+	var req pagination.Request
+	if err := ctx.ShouldBind(&req); err != nil {
+		res := presentation.BuildResponseFailed(message.FailedGetDataFromBody, err.Error(), nil)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, res)
+		return
+	}
+
+	result, err := c.userService.GetAllUsersWithPagination(ctx.Request.Context(), req)
+	if err != nil {
+		res := presentation.BuildResponseFailed(message.FailedGetAllUsers, err.Error(), nil)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, res)
+		return
+	}
+
+	res := presentation.Response{
+		Status:  true,
+		Message: message.SuccessGetAllUsers,
+		Data:    result.Data,
+		Meta:    result.Response,
+	}
 	ctx.JSON(http.StatusOK, res)
 }
 
