@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"fmt"
 	"gorm.io/gorm"
 	"kpl-base/application/request"
 	"kpl-base/application/response"
@@ -215,6 +216,9 @@ func (s *userService) Delete(ctx context.Context, userID string) error {
 	}
 
 	defer func() {
+		if r := recover(); r != nil {
+			err = RecoveredFromPanic(r)
+		}
 		validatedTransaction.CommitOrRollback(ctx, tx, err)
 	}()
 
@@ -224,6 +228,7 @@ func (s *userService) Delete(ctx context.Context, userID string) error {
 	}
 
 	err = s.userRepository.Delete(ctx, tx, retrievedUser.ID.String())
+	err = fmt.Errorf("test error")
 	if err != nil {
 		return user.ErrorDeleteUser
 	}
@@ -243,6 +248,9 @@ func (s *userService) Verify(ctx context.Context, req request.UserLogin) (respon
 	}
 
 	defer func() {
+		if r := recover(); r != nil {
+			err = RecoveredFromPanic(r)
+		}
 		validatedTransaction.CommitOrRollback(ctx, tx, err)
 	}()
 
@@ -298,6 +306,9 @@ func (s *userService) RefreshToken(ctx context.Context, req request.RefreshToken
 	}
 
 	defer func() {
+		if r := recover(); r != nil {
+			err = RecoveredFromPanic(r)
+		}
 		validatedTransaction.CommitOrRollback(ctx, tx, err)
 	}()
 
@@ -357,6 +368,9 @@ func (s *userService) RevokeRefreshToken(ctx context.Context, userID string) err
 	}
 
 	defer func() {
+		if r := recover(); r != nil {
+			err = RecoveredFromPanic(r)
+		}
 		validatedTransaction.CommitOrRollback(ctx, tx, err)
 	}()
 
