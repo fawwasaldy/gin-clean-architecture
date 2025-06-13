@@ -36,7 +36,7 @@ func (r repository) Create(ctx context.Context, tx interface{}, refreshTokenEnti
 	return refreshTokenEntity, nil
 }
 
-func (r repository) FindByToken(ctx context.Context, tx interface{}, token string) (refresh_token.RefreshToken, error) {
+func (r repository) FindByUserID(ctx context.Context, tx interface{}, userID string) (refresh_token.RefreshToken, error) {
 	validatedTransaction, err := validation.ValidateTransaction(tx)
 	if err != nil {
 		return refresh_token.RefreshToken{}, err
@@ -48,7 +48,7 @@ func (r repository) FindByToken(ctx context.Context, tx interface{}, token strin
 	}
 
 	var refreshTokenSchema RefreshToken
-	if err = db.WithContext(ctx).Where("token = ?", token).Take(&refreshTokenSchema).Error; err != nil {
+	if err = db.WithContext(ctx).Where("user_id = ?", userID).Take(&refreshTokenSchema).Error; err != nil {
 		return refresh_token.RefreshToken{}, err
 	}
 

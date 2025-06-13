@@ -18,6 +18,11 @@ type RefreshToken struct {
 	shared.Timestamp
 }
 
+func IsRefreshTokenMatch(token, hashedToken string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hashedToken), []byte(token))
+	return err == nil
+}
+
 func HashToken(token string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(token), BcryptCost)
 	if err != nil {

@@ -312,8 +312,12 @@ func (s *userService) RefreshToken(ctx context.Context, req request.RefreshToken
 		validatedTransaction.CommitOrRollback(ctx, tx, err)
 	}()
 
-	retrievedRefreshToken, err := s.refreshTokenRepository.FindByToken(ctx, tx, req.RefreshToken)
+	retrievedRefreshToken, err := s.refreshTokenRepository.FindByUserID(ctx, tx, req.UserID)
 	if err != nil {
+		return response.RefreshToken{}, user.ErrorUserNotFound
+	}
+
+	if !refresh_token.IsRefreshTokenMatch(req.RefreshToken, retrievedRefreshToken.Token) {
 		return response.RefreshToken{}, user.ErrorTokenInvalid
 	}
 
