@@ -1,4 +1,4 @@
-module kpl-base
+module gin-clean-architecture
 
 go 1.24
 

@@ -3,14 +3,14 @@ package service
 import (
 	"context"
 	"errors"
+	"gin-clean-architecture/application/request"
+	"gin-clean-architecture/application/response"
+	"gin-clean-architecture/domain/refresh_token"
+	"gin-clean-architecture/domain/shared"
+	"gin-clean-architecture/domain/user"
+	"gin-clean-architecture/infrastructure/database/validation"
+	"gin-clean-architecture/platform/pagination"
 	"gorm.io/gorm"
-	"kpl-base/application/request"
-	"kpl-base/application/response"
-	"kpl-base/domain/refresh_token"
-	"kpl-base/domain/shared"
-	"kpl-base/domain/user"
-	"kpl-base/infrastructure/database/validation"
-	"kpl-base/platform/pagination"
 	"time"
 )
 

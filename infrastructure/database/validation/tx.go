@@ -1,8 +1,8 @@
 package validation
 
 import (
+	"gin-clean-architecture/infrastructure/database/transaction"
 	"gorm.io/gorm"
-	"kpl-base/infrastructure/database/transaction"
 )
 
 func ValidateTransaction(tx interface{}) (*transaction.Repository, error) {

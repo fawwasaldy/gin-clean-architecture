@@ -2,10 +2,10 @@ package user
 
 import (
 	"context"
-	"kpl-base/domain/user"
-	"kpl-base/infrastructure/database/transaction"
-	"kpl-base/infrastructure/database/validation"
-	"kpl-base/platform/pagination"
+	"gin-clean-architecture/domain/user"
+	"gin-clean-architecture/infrastructure/database/transaction"
+	"gin-clean-architecture/infrastructure/database/validation"
+	"gin-clean-architecture/platform/pagination"
 )
 
 type repository struct {

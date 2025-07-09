@@ -1,12 +1,12 @@
 package controller
 
 import (
+	"gin-clean-architecture/application/request"
+	"gin-clean-architecture/application/service"
+	"gin-clean-architecture/platform/pagination"
+	"gin-clean-architecture/presentation"
+	"gin-clean-architecture/presentation/message"
 	"github.com/gin-gonic/gin"
-	"kpl-base/application/request"
-	"kpl-base/application/service"
-	"kpl-base/platform/pagination"
-	"kpl-base/presentation"
-	"kpl-base/presentation/message"
 	"net/http"
 )
 

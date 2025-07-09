@@ -2,9 +2,9 @@ package refresh_token
 
 import (
 	"fmt"
+	"gin-clean-architecture/domain/identity"
+	"gin-clean-architecture/domain/shared"
 	"golang.org/x/crypto/bcrypt"
-	"kpl-base/domain/identity"
-	"kpl-base/domain/shared"
 	"time"
 )
 

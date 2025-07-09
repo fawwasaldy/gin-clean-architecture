@@ -1,8 +1,8 @@
 package user
 
 import (
-	"kpl-base/domain/identity"
-	"kpl-base/domain/shared"
+	"gin-clean-architecture/domain/identity"
+	"gin-clean-architecture/domain/shared"
 )
 
 type User struct {

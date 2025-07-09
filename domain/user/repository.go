@@ -2,7 +2,7 @@ package user
 
 import (
 	"context"
-	"kpl-base/platform/pagination"
+	"gin-clean-architecture/platform/pagination"
 )
 
 type (

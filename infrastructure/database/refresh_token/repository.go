@@ -2,9 +2,9 @@ package refresh_token
 
 import (
 	"context"
-	"kpl-base/domain/refresh_token"
-	"kpl-base/infrastructure/database/transaction"
-	"kpl-base/infrastructure/database/validation"
+	"gin-clean-architecture/domain/refresh_token"
+	"gin-clean-architecture/infrastructure/database/transaction"
+	"gin-clean-architecture/infrastructure/database/validation"
 	"time"
 )
 

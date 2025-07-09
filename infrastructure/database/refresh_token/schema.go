@@ -1,11 +1,11 @@
 package refresh_token
 
 import (
+	"gin-clean-architecture/domain/identity"
+	"gin-clean-architecture/domain/refresh_token"
+	"gin-clean-architecture/domain/shared"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
-	"kpl-base/domain/identity"
-	"kpl-base/domain/refresh_token"
-	"kpl-base/domain/shared"
 	"time"
 )
 

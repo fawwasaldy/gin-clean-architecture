@@ -1,10 +1,10 @@
 package middleware
 
 import (
+	"gin-clean-architecture/application/service"
+	"gin-clean-architecture/presentation"
+	"gin-clean-architecture/presentation/message"
 	"github.com/gin-gonic/gin"
-	"kpl-base/application/service"
-	"kpl-base/presentation"
-	"kpl-base/presentation/message"
 	"net/http"
 	"strings"
 )

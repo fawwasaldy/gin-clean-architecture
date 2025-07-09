@@ -1,9 +1,9 @@
 package migration
 
 import (
+	"gin-clean-architecture/infrastructure/database/refresh_token"
+	"gin-clean-architecture/infrastructure/database/user"
 	"gorm.io/gorm"
-	"kpl-base/infrastructure/database/refresh_token"
-	"kpl-base/infrastructure/database/user"
 )
 
 func Migrate(db *gorm.DB) error {

@@ -1,7 +1,7 @@
 package command
 
 import (
-	"kpl-base/infrastructure/database/migration"
+	"gin-clean-architecture/infrastructure/database/migration"
 	"log"
 	"os"
 

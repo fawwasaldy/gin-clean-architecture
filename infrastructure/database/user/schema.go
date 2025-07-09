@@ -1,11 +1,11 @@
 package user
 
 import (
+	"gin-clean-architecture/domain/identity"
+	"gin-clean-architecture/domain/shared"
+	"gin-clean-architecture/domain/user"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
-	"kpl-base/domain/identity"
-	"kpl-base/domain/shared"
-	"kpl-base/domain/user"
 	"time"
 )
 
