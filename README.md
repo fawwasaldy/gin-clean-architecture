@@ -177,7 +177,7 @@ The following table lists the available API endpoints.
 
 ## 🙏 Acknowledgements
 
-This project is an enhancement and development of the foundation laid by **[go-gin-clean-starter](https://github.com/caknoooo/go-gin-clean-starter)**. A big thank you to the **[Caknoooo](https://github.com/Caknoooo)** for creating an awesome starter template. We encourage you to visit and star the original repository as well!
+This project is an enhancement and development of the foundation laid by **[go-gin-clean-starter](https://github.com/caknoooo/go-gin-clean-starter)**. A big thank you to **[Caknoooo](https://github.com/Caknoooo)** for creating an awesome starter template. We encourage you to visit and star the original repository as well!
 
 ---
 
