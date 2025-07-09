@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"gin-clean-architecture/application"
 	"gin-clean-architecture/application/request"
 	"gin-clean-architecture/application/response"
 	"gin-clean-architecture/domain/refresh_token"
@@ -216,7 +217,7 @@ func (s *userService) Delete(ctx context.Context, userID string) error {
 
 	defer func() {
 		if r := recover(); r != nil {
-			err = RecoveredFromPanic(r)
+			err = application.RecoveredFromPanic(r)
 		}
 		validatedTransaction.CommitOrRollback(ctx, tx, err)
 	}()
@@ -247,7 +248,7 @@ func (s *userService) Verify(ctx context.Context, req request.UserLogin) (respon
 
 	defer func() {
 		if r := recover(); r != nil {
-			err = RecoveredFromPanic(r)
+			err = application.RecoveredFromPanic(r)
 		}
 		validatedTransaction.CommitOrRollback(ctx, tx, err)
 	}()
@@ -305,7 +306,7 @@ func (s *userService) RefreshToken(ctx context.Context, req request.RefreshToken
 
 	defer func() {
 		if r := recover(); r != nil {
-			err = RecoveredFromPanic(r)
+			err = application.RecoveredFromPanic(r)
 		}
 		validatedTransaction.CommitOrRollback(ctx, tx, err)
 	}()
@@ -371,7 +372,7 @@ func (s *userService) RevokeRefreshToken(ctx context.Context, userID string) err
 
 	defer func() {
 		if r := recover(); r != nil {
-			err = RecoveredFromPanic(r)
+			err = application.RecoveredFromPanic(r)
 		}
 		validatedTransaction.CommitOrRollback(ctx, tx, err)
 	}()
