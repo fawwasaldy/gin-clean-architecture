@@ -118,23 +118,25 @@ Follow these steps to get the project up and running on your local machine.
     Create a `.env` file in the root directory and populate it with your configuration. You can use the `.env.example` as a template.
 
     ```env
-    # Application Settings
-    APP_ENV=development
-    GOLANG_PORT=8888
+    APP_NAME=gin-clean-architecture
     IS_LOGGER=true
-
-    # Database Connection
+    
     DB_HOST=localhost
+    DB_USER=postgres
+    DB_PASS=<your password>
+    DB_NAME=<your database name>
     DB_PORT=5432
-    DB_USER=your_db_user
-    DB_PASS=your_db_password
-    DB_NAME=your_db_name
-
-    # JWT Configuration
-    JWT_SECRET=a-very-strong-and-secret-key
-    JWT_ISSUER=my-app
+    
+    NGINX_PORT=80
+    GOLANG_PORT=8888
+    APP_ENV=localhost
+    
+    JWT_SECRET=<your secret key>
+    JWT_ISSUER=gin-clean-architecture
     JWT_ACCESS_EXPIRATION=15m
     JWT_REFRESH_EXPIRATION=7d
+
+    AES_KEY=<your aes key>
     ```
 
 3.  **Install Dependencies:**
@@ -149,7 +151,7 @@ Follow these steps to get the project up and running on your local machine.
 5.  **Start the Server:**
     Use this command to launch the application.
     ```bash
-    go run main.go --run
+    go run main.go
     ```
     The server will be live at `http://localhost:8888`.
 
