@@ -1,15 +1,14 @@
 package migration
 
 import (
-	"gin-clean-architecture/infrastructure/database/refresh_token"
-	"gin-clean-architecture/infrastructure/database/user"
+	"gin-clean-architecture/infrastructure/database/schema"
 	"gorm.io/gorm"
 )
 
 func Migrate(db *gorm.DB) error {
 	if err := db.AutoMigrate(
-		&user.User{},
-		&refresh_token.RefreshToken{},
+		&schema.User{},
+		&schema.RefreshToken{},
 	); err != nil {
 		return err
 	}

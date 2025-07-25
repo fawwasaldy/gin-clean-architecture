@@ -6,9 +6,8 @@ import (
 	domain_user "gin-clean-architecture/domain/user"
 	"gin-clean-architecture/infrastructure/adapter/file_storage"
 	"gin-clean-architecture/infrastructure/database/config"
-	infrastructure_refresh_token "gin-clean-architecture/infrastructure/database/refresh_token"
+	infrastructure_refresh_token "gin-clean-architecture/infrastructure/database/repository"
 	"gin-clean-architecture/infrastructure/database/transaction"
-	infrastructure_user "gin-clean-architecture/infrastructure/database/user"
 	"gin-clean-architecture/presentation/controller"
 	"gin-clean-architecture/presentation/middleware"
 	"gin-clean-architecture/presentation/route"
@@ -57,8 +56,8 @@ func main() {
 	jwtService := service.NewJWTService()
 
 	transactionRepository := transaction.NewRepository(db)
-	userRepository := infrastructure_user.NewRepository(transactionRepository)
-	refreshTokenRepository := infrastructure_refresh_token.NewRepository(transactionRepository)
+	userRepository := infrastructure_refresh_token.NewUserRepository(transactionRepository)
+	refreshTokenRepository := infrastructure_refresh_token.NewRefreshTokenRepository(transactionRepository)
 
 	fileStorage := file_storage.NewLocalAdapter()
 

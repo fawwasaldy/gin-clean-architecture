@@ -1,22 +1,23 @@
-package refresh_token
+package repository
 
 import (
 	"context"
 	"gin-clean-architecture/domain/refresh_token"
+	"gin-clean-architecture/infrastructure/database/schema"
 	"gin-clean-architecture/infrastructure/database/transaction"
 	"gin-clean-architecture/infrastructure/database/validation"
 	"time"
 )
 
-type repository struct {
+type refreshTokenRepository struct {
 	db *transaction.Repository
 }
 
-func NewRepository(db *transaction.Repository) refresh_token.Repository {
-	return &repository{db: db}
+func NewRefreshTokenRepository(db *transaction.Repository) refresh_token.Repository {
+	return &refreshTokenRepository{db: db}
 }
 
-func (r repository) Create(ctx context.Context, tx interface{}, refreshTokenEntity refresh_token.RefreshToken) (refresh_token.RefreshToken, error) {
+func (r refreshTokenRepository) Create(ctx context.Context, tx interface{}, refreshTokenEntity refresh_token.RefreshToken) (refresh_token.RefreshToken, error) {
 	validatedTransaction, err := validation.ValidateTransaction(tx)
 	if err != nil {
 		return refresh_token.RefreshToken{}, err
@@ -27,16 +28,16 @@ func (r repository) Create(ctx context.Context, tx interface{}, refreshTokenEnti
 		db = r.db.DB()
 	}
 
-	refreshTokenSchema := EntityToSchema(refreshTokenEntity)
+	refreshTokenSchema := schema.RefreshTokenEntityToSchema(refreshTokenEntity)
 	if err = db.WithContext(ctx).Create(&refreshTokenSchema).Error; err != nil {
 		return refresh_token.RefreshToken{}, err
 	}
 
-	refreshTokenEntity = SchemaToEntity(refreshTokenSchema)
+	refreshTokenEntity = schema.RefreshTokenSchemaToEntity(refreshTokenSchema)
 	return refreshTokenEntity, nil
 }
 
-func (r repository) FindByUserID(ctx context.Context, tx interface{}, userID string) (refresh_token.RefreshToken, error) {
+func (r refreshTokenRepository) FindByUserID(ctx context.Context, tx interface{}, userID string) (refresh_token.RefreshToken, error) {
 	validatedTransaction, err := validation.ValidateTransaction(tx)
 	if err != nil {
 		return refresh_token.RefreshToken{}, err
@@ -47,16 +48,16 @@ func (r repository) FindByUserID(ctx context.Context, tx interface{}, userID str
 		db = r.db.DB()
 	}
 
-	var refreshTokenSchema RefreshToken
+	var refreshTokenSchema schema.RefreshToken
 	if err = db.WithContext(ctx).Where("user_id = ?", userID).Take(&refreshTokenSchema).Error; err != nil {
 		return refresh_token.RefreshToken{}, err
 	}
 
-	refreshTokenEntity := SchemaToEntity(refreshTokenSchema)
+	refreshTokenEntity := schema.RefreshTokenSchemaToEntity(refreshTokenSchema)
 	return refreshTokenEntity, nil
 }
 
-func (r repository) DeleteByUserID(ctx context.Context, tx interface{}, userID string) error {
+func (r refreshTokenRepository) DeleteByUserID(ctx context.Context, tx interface{}, userID string) error {
 	validatedTransaction, err := validation.ValidateTransaction(tx)
 	if err != nil {
 		return err
@@ -67,14 +68,14 @@ func (r repository) DeleteByUserID(ctx context.Context, tx interface{}, userID s
 		db = r.db.DB()
 	}
 
-	if err = db.WithContext(ctx).Where("user_id = ?", userID).Delete(&RefreshToken{}).Error; err != nil {
+	if err = db.WithContext(ctx).Where("user_id = ?", userID).Delete(&schema.RefreshToken{}).Error; err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (r repository) DeleteByToken(ctx context.Context, tx interface{}, token string) error {
+func (r refreshTokenRepository) DeleteByToken(ctx context.Context, tx interface{}, token string) error {
 	validatedTransaction, err := validation.ValidateTransaction(tx)
 	if err != nil {
 		return err
@@ -85,14 +86,14 @@ func (r repository) DeleteByToken(ctx context.Context, tx interface{}, token str
 		db = r.db.DB()
 	}
 
-	if err = db.WithContext(ctx).Where("token = ?", token).Delete(&RefreshToken{}).Error; err != nil {
+	if err = db.WithContext(ctx).Where("token = ?", token).Delete(&schema.RefreshToken{}).Error; err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (r repository) DeleteExpired(ctx context.Context, tx interface{}) error {
+func (r refreshTokenRepository) DeleteExpired(ctx context.Context, tx interface{}) error {
 	validatedTransaction, err := validation.ValidateTransaction(tx)
 	if err != nil {
 		return err
@@ -103,7 +104,7 @@ func (r repository) DeleteExpired(ctx context.Context, tx interface{}) error {
 		db = r.db.DB()
 	}
 
-	if err = db.WithContext(ctx).Where("expires_at < ?", time.Now()).Delete(&RefreshToken{}).Error; err != nil {
+	if err = db.WithContext(ctx).Where("expires_at < ?", time.Now()).Delete(&schema.RefreshToken{}).Error; err != nil {
 		return err
 	}
 
