@@ -12,7 +12,7 @@ func NewID(id uuid.UUID) ID {
 	}
 }
 
-func NewIDFromSchema(id uuid.UUID) ID {
+func NewIDFromTable(id uuid.UUID) ID {
 	return ID{
 		ID: id,
 	}

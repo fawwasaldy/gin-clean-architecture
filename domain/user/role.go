@@ -27,7 +27,7 @@ func NewRole(name string) (Role, error) {
 	}, nil
 }
 
-func NewRoleFromSchema(name string) Role {
+func NewRoleFromTable(name string) Role {
 	return Role{
 		Name: name,
 	}

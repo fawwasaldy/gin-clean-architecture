@@ -1,4 +1,4 @@
-package schema
+package table
 
 import (
 	"gin-clean-architecture/domain/identity"
@@ -23,7 +23,7 @@ type User struct {
 	DeletedAt   gorm.DeletedAt `gorm:"type:timestamp with time zone;column:deleted_at"`
 }
 
-func UserEntityToSchema(entity user.User) User {
+func UserEntityToTable(entity user.User) User {
 	var deletedAtTime time.Time
 	if entity.Timestamp.DeletedAt != nil {
 		deletedAtTime = *entity.Timestamp.DeletedAt
@@ -48,20 +48,20 @@ func UserEntityToSchema(entity user.User) User {
 	}
 }
 
-func UserSchemaToEntity(schema User) user.User {
+func UserTableToEntity(table User) user.User {
 	return user.User{
-		ID:          identity.NewIDFromSchema(schema.ID),
-		Name:        schema.Name,
-		Email:       schema.Email,
-		PhoneNumber: schema.PhoneNumber,
-		Password:    user.NewPasswordFromSchema(schema.Password),
-		Role:        user.NewRoleFromSchema(schema.Role),
-		ImageUrl:    shared.NewURLFromSchema(schema.ImageUrl),
-		IsVerified:  schema.IsVerified,
+		ID:          identity.NewIDFromTable(table.ID),
+		Name:        table.Name,
+		Email:       table.Email,
+		PhoneNumber: table.PhoneNumber,
+		Password:    user.NewPasswordFromTable(table.Password),
+		Role:        user.NewRoleFromTable(table.Role),
+		ImageUrl:    shared.NewURLFromTable(table.ImageUrl),
+		IsVerified:  table.IsVerified,
 		Timestamp: shared.Timestamp{
-			CreatedAt: schema.CreatedAt,
-			UpdatedAt: schema.UpdatedAt,
-			DeletedAt: &schema.DeletedAt.Time,
+			CreatedAt: table.CreatedAt,
+			UpdatedAt: table.UpdatedAt,
+			DeletedAt: &table.DeletedAt.Time,
 		},
 	}
 }

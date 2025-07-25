@@ -1,4 +1,4 @@
-package schema
+package table
 
 import (
 	"gin-clean-architecture/domain/identity"
@@ -19,7 +19,7 @@ type RefreshToken struct {
 	DeletedAt gorm.DeletedAt `gorm:"type:timestamp with time zone;column:deleted_at"`
 }
 
-func RefreshTokenEntityToSchema(entity refresh_token.RefreshToken) RefreshToken {
+func RefreshTokenEntityToTable(entity refresh_token.RefreshToken) RefreshToken {
 	var deletedAtTime time.Time
 	if entity.Timestamp.DeletedAt != nil {
 		deletedAtTime = *entity.Timestamp.DeletedAt
@@ -40,16 +40,16 @@ func RefreshTokenEntityToSchema(entity refresh_token.RefreshToken) RefreshToken 
 	}
 }
 
-func RefreshTokenSchemaToEntity(schema RefreshToken) refresh_token.RefreshToken {
+func RefreshTokenTableToEntity(table RefreshToken) refresh_token.RefreshToken {
 	return refresh_token.RefreshToken{
-		ID:        identity.NewIDFromSchema(schema.ID),
-		UserID:    identity.NewIDFromSchema(schema.UserID),
-		Token:     schema.Token,
-		ExpiresAt: schema.ExpiresAt,
+		ID:        identity.NewIDFromTable(table.ID),
+		UserID:    identity.NewIDFromTable(table.UserID),
+		Token:     table.Token,
+		ExpiresAt: table.ExpiresAt,
 		Timestamp: shared.Timestamp{
-			CreatedAt: schema.CreatedAt,
-			UpdatedAt: schema.UpdatedAt,
-			DeletedAt: &schema.DeletedAt.Time,
+			CreatedAt: table.CreatedAt,
+			UpdatedAt: table.UpdatedAt,
+			DeletedAt: &table.DeletedAt.Time,
 		},
 	}
 }

@@ -26,7 +26,7 @@ func NewPassword(password string) (Password, error) {
 	}, nil
 }
 
-func NewPasswordFromSchema(hashedPassword string) Password {
+func NewPasswordFromTable(hashedPassword string) Password {
 	return Password{
 		Password: hashedPassword,
 	}

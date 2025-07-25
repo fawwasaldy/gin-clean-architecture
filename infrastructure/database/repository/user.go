@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 	"gin-clean-architecture/domain/user"
-	"gin-clean-architecture/infrastructure/database/schema"
+	"gin-clean-architecture/infrastructure/database/table"
 	"gin-clean-architecture/infrastructure/database/transaction"
 	"gin-clean-architecture/infrastructure/database/validation"
 	"gin-clean-architecture/platform/pagination"
@@ -28,12 +28,12 @@ func (r *userRepository) Register(ctx context.Context, tx interface{}, userEntit
 		db = r.db.DB()
 	}
 
-	userSchema := schema.UserEntityToSchema(userEntity)
-	if err = db.WithContext(ctx).Create(&userSchema).Error; err != nil {
+	userTable := table.UserEntityToTable(userEntity)
+	if err = db.WithContext(ctx).Create(&userTable).Error; err != nil {
 		return user.User{}, err
 	}
 
-	userEntity = schema.UserSchemaToEntity(userSchema)
+	userEntity = table.UserTableToEntity(userTable)
 	return userEntity, nil
 }
 
@@ -48,12 +48,12 @@ func (r *userRepository) GetAllUsersWithPagination(ctx context.Context, tx inter
 		db = r.db.DB()
 	}
 
-	var userSchemas []schema.User
+	var userTables []table.User
 	var count int64
 
 	req.Default()
 
-	query := db.WithContext(ctx).Model(&schema.User{})
+	query := db.WithContext(ctx).Model(&table.User{})
 	if req.Search != "" {
 		query = query.Where("name LIKE ? OR email LIKE ?", "%"+req.Search+"%", "%"+req.Search+"%")
 	}
@@ -62,15 +62,15 @@ func (r *userRepository) GetAllUsersWithPagination(ctx context.Context, tx inter
 		return pagination.ResponseWithData{}, err
 	}
 
-	if err = query.Scopes(pagination.Paginate(req)).Find(&userSchemas).Error; err != nil {
+	if err = query.Scopes(pagination.Paginate(req)).Find(&userTables).Error; err != nil {
 		return pagination.ResponseWithData{}, err
 	}
 
 	totalPage := pagination.TotalPage(count, int64(req.PerPage))
 
-	data := make([]any, len(userSchemas))
-	for i, userSchema := range userSchemas {
-		data[i] = schema.UserSchemaToEntity(userSchema)
+	data := make([]any, len(userTables))
+	for i, userTable := range userTables {
+		data[i] = table.UserTableToEntity(userTable)
 	}
 	return pagination.ResponseWithData{
 		Data: data,
@@ -94,12 +94,12 @@ func (r *userRepository) GetUserByID(ctx context.Context, tx interface{}, id str
 		db = r.db.DB()
 	}
 
-	var userSchema schema.User
-	if err = db.WithContext(ctx).Where("id = ?", id).Take(&userSchema).Error; err != nil {
+	var userTable table.User
+	if err = db.WithContext(ctx).Where("id = ?", id).Take(&userTable).Error; err != nil {
 		return user.User{}, err
 	}
 
-	userEntity := schema.UserSchemaToEntity(userSchema)
+	userEntity := table.UserTableToEntity(userTable)
 	return userEntity, nil
 }
 
@@ -114,12 +114,12 @@ func (r *userRepository) GetUserByEmail(ctx context.Context, tx interface{}, ema
 		db = r.db.DB()
 	}
 
-	var userSchema schema.User
-	if err = db.WithContext(ctx).Where("email = ?", email).Take(&userSchema).Error; err != nil {
+	var userTable table.User
+	if err = db.WithContext(ctx).Where("email = ?", email).Take(&userTable).Error; err != nil {
 		return user.User{}, err
 	}
 
-	userEntity := schema.UserSchemaToEntity(userSchema)
+	userEntity := table.UserTableToEntity(userTable)
 	return userEntity, nil
 }
 
@@ -134,12 +134,12 @@ func (r *userRepository) CheckEmail(ctx context.Context, tx interface{}, email s
 		db = r.db.DB()
 	}
 
-	var userSchema schema.User
-	if err = db.WithContext(ctx).Where("email = ?", email).Take(&userSchema).Error; err != nil {
+	var userTable table.User
+	if err = db.WithContext(ctx).Where("email = ?", email).Take(&userTable).Error; err != nil {
 		return user.User{}, false, err
 	}
 
-	userEntity := schema.UserSchemaToEntity(userSchema)
+	userEntity := table.UserTableToEntity(userTable)
 	return userEntity, true, nil
 }
 
@@ -154,12 +154,12 @@ func (r *userRepository) Update(ctx context.Context, tx interface{}, userEntity 
 		db = r.db.DB()
 	}
 
-	userSchema := schema.UserEntityToSchema(userEntity)
-	if err = db.WithContext(ctx).Updates(&userSchema).Error; err != nil {
+	userTable := table.UserEntityToTable(userEntity)
+	if err = db.WithContext(ctx).Updates(&userTable).Error; err != nil {
 		return user.User{}, err
 	}
 
-	userEntity = schema.UserSchemaToEntity(userSchema)
+	userEntity = table.UserTableToEntity(userTable)
 	return userEntity, nil
 }
 
@@ -174,7 +174,7 @@ func (r *userRepository) Delete(ctx context.Context, tx interface{}, id string) 
 		db = r.db.DB()
 	}
 
-	if err = db.WithContext(ctx).Where("id = ?", id).Delete(&schema.User{}).Error; err != nil {
+	if err = db.WithContext(ctx).Where("id = ?", id).Delete(&table.User{}).Error; err != nil {
 		return err
 	}
 

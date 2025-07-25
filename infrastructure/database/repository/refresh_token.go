@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 	"gin-clean-architecture/domain/refresh_token"
-	"gin-clean-architecture/infrastructure/database/schema"
+	"gin-clean-architecture/infrastructure/database/table"
 	"gin-clean-architecture/infrastructure/database/transaction"
 	"gin-clean-architecture/infrastructure/database/validation"
 	"time"
@@ -28,12 +28,12 @@ func (r refreshTokenRepository) Create(ctx context.Context, tx interface{}, refr
 		db = r.db.DB()
 	}
 
-	refreshTokenSchema := schema.RefreshTokenEntityToSchema(refreshTokenEntity)
-	if err = db.WithContext(ctx).Create(&refreshTokenSchema).Error; err != nil {
+	refreshTokenTable := table.RefreshTokenEntityToTable(refreshTokenEntity)
+	if err = db.WithContext(ctx).Create(&refreshTokenTable).Error; err != nil {
 		return refresh_token.RefreshToken{}, err
 	}
 
-	refreshTokenEntity = schema.RefreshTokenSchemaToEntity(refreshTokenSchema)
+	refreshTokenEntity = table.RefreshTokenTableToEntity(refreshTokenTable)
 	return refreshTokenEntity, nil
 }
 
@@ -48,12 +48,12 @@ func (r refreshTokenRepository) FindByUserID(ctx context.Context, tx interface{}
 		db = r.db.DB()
 	}
 
-	var refreshTokenSchema schema.RefreshToken
-	if err = db.WithContext(ctx).Where("user_id = ?", userID).Take(&refreshTokenSchema).Error; err != nil {
+	var refreshTokenTable table.RefreshToken
+	if err = db.WithContext(ctx).Where("user_id = ?", userID).Take(&refreshTokenTable).Error; err != nil {
 		return refresh_token.RefreshToken{}, err
 	}
 
-	refreshTokenEntity := schema.RefreshTokenSchemaToEntity(refreshTokenSchema)
+	refreshTokenEntity := table.RefreshTokenTableToEntity(refreshTokenTable)
 	return refreshTokenEntity, nil
 }
 
@@ -68,7 +68,7 @@ func (r refreshTokenRepository) DeleteByUserID(ctx context.Context, tx interface
 		db = r.db.DB()
 	}
 
-	if err = db.WithContext(ctx).Where("user_id = ?", userID).Delete(&schema.RefreshToken{}).Error; err != nil {
+	if err = db.WithContext(ctx).Where("user_id = ?", userID).Delete(&table.RefreshToken{}).Error; err != nil {
 		return err
 	}
 
@@ -86,7 +86,7 @@ func (r refreshTokenRepository) DeleteByToken(ctx context.Context, tx interface{
 		db = r.db.DB()
 	}
 
-	if err = db.WithContext(ctx).Where("token = ?", token).Delete(&schema.RefreshToken{}).Error; err != nil {
+	if err = db.WithContext(ctx).Where("token = ?", token).Delete(&table.RefreshToken{}).Error; err != nil {
 		return err
 	}
 
@@ -104,7 +104,7 @@ func (r refreshTokenRepository) DeleteExpired(ctx context.Context, tx interface{
 		db = r.db.DB()
 	}
 
-	if err = db.WithContext(ctx).Where("expires_at < ?", time.Now()).Delete(&schema.RefreshToken{}).Error; err != nil {
+	if err = db.WithContext(ctx).Where("expires_at < ?", time.Now()).Delete(&table.RefreshToken{}).Error; err != nil {
 		return err
 	}
 

@@ -15,7 +15,7 @@ func NewURL(path string) (URL, error) {
 	}, nil
 }
 
-func NewURLFromSchema(path string) URL {
+func NewURLFromTable(path string) URL {
 	return URL{
 		Path: path,
 	}
