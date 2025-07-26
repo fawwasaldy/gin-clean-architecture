@@ -33,10 +33,10 @@ func Commands(db *gorm.DB) bool {
 	}
 
 	if seed {
-		//if err := migration.Seeder(db); err != nil {
-		//	log.Fatalf("error migration seeder: %v", err)
-		//}
-		//log.Println("seeder completed successfully")
+		if err := migration.Seeder(db); err != nil {
+			log.Fatalf("error migration seeder: %v", err)
+		}
+		log.Println("seeder completed successfully")
 	}
 
 	if run {
