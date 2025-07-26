@@ -33,7 +33,8 @@ go.work.sum
 
 *.env
 storage/
-assets/
+assets/*
+!assets/default
 volumes/
 
 # Logs
