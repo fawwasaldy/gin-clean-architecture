@@ -1,8 +1,11 @@
 package migration
 
 import (
+	"fmt"
+	"gin-clean-architecture/infrastructure/database/config"
 	"gin-clean-architecture/infrastructure/database/table"
 	"gorm.io/gorm"
+	"os"
 )
 
 var entities = []interface{}{
@@ -19,6 +22,10 @@ func Migrate(db *gorm.DB) error {
 }
 
 func Rollback(db *gorm.DB) error {
+	if os.Getenv("APP_ENV") == config.RunProduction {
+		return fmt.Errorf("rollback is not allowed for production environment")
+	}
+
 	if err := db.Migrator().DropTable(entities...); err != nil {
 		return err
 	}
