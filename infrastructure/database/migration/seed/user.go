@@ -13,7 +13,6 @@ func User(db *gorm.DB) error {
 	for _, userData := range data.UserSeedData() {
 		var existingUser table.User
 		if err := db.Where("email = ?", userData.Email).First(&existingUser).Error; err == nil {
-			log.Printf("User with email %s already exists, skipping seed process for this user.", userData.Email)
 			continue
 		}
 

@@ -3,10 +3,10 @@ package main
 import (
 	"gin-clean-architecture/application/service"
 	"gin-clean-architecture/command"
-	domain_user "gin-clean-architecture/domain/user"
+	"gin-clean-architecture/domain/user"
 	"gin-clean-architecture/infrastructure/adapter/file_storage"
 	"gin-clean-architecture/infrastructure/database/config"
-	infrastructure_refresh_token "gin-clean-architecture/infrastructure/database/repository"
+	"gin-clean-architecture/infrastructure/database/repository"
 	"gin-clean-architecture/infrastructure/database/transaction"
 	"gin-clean-architecture/presentation/controller"
 	"gin-clean-architecture/presentation/middleware"
@@ -56,12 +56,12 @@ func main() {
 	jwtService := service.NewJWTService()
 
 	transactionRepository := transaction.NewRepository(db)
-	userRepository := infrastructure_refresh_token.NewUserRepository(transactionRepository)
-	refreshTokenRepository := infrastructure_refresh_token.NewRefreshTokenRepository(transactionRepository)
+	userRepository := repository.NewUserRepository(transactionRepository)
+	refreshTokenRepository := repository.NewRefreshTokenRepository(transactionRepository)
 
 	fileStorage := file_storage.NewLocalAdapter()
 
-	userDomainService := domain_user.NewService(fileStorage)
+	userDomainService := user.NewService(fileStorage)
 
 	userService := service.NewUserService(userRepository, refreshTokenRepository, *userDomainService, jwtService, transactionRepository)
 
