@@ -5,11 +5,21 @@ import (
 	"gorm.io/gorm"
 )
 
+var entities = []interface{}{
+	&table.User{},
+	&table.RefreshToken{},
+}
+
 func Migrate(db *gorm.DB) error {
-	if err := db.AutoMigrate(
-		&table.User{},
-		&table.RefreshToken{},
-	); err != nil {
+	if err := db.AutoMigrate(entities...); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func Rollback(db *gorm.DB) error {
+	if err := db.Migrator().DropTable(entities...); err != nil {
 		return err
 	}
 

@@ -11,6 +11,7 @@ import (
 func Commands(db *gorm.DB) bool {
 	migrate := false
 	seed := false
+	rollback := false
 	run := false
 
 	for _, arg := range os.Args[1:] {
@@ -19,6 +20,9 @@ func Commands(db *gorm.DB) bool {
 		}
 		if arg == "--seed" {
 			seed = true
+		}
+		if arg == "--rollback" {
+			rollback = true
 		}
 		if arg == "--run" {
 			run = true
@@ -37,6 +41,13 @@ func Commands(db *gorm.DB) bool {
 			log.Fatalf("error migration seeder: %v", err)
 		}
 		log.Println("seeder completed successfully")
+	}
+
+	if rollback {
+		if err := migration.Rollback(db); err != nil {
+			log.Fatalf("error migration rollback: %v", err)
+		}
+		log.Println("rollback completed successfully")
 	}
 
 	if run {
