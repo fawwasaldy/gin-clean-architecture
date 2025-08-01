@@ -16,6 +16,7 @@ type (
 		Login(ctx *gin.Context)
 		Me(ctx *gin.Context)
 		RefreshToken(ctx *gin.Context)
+		Logout(ctx *gin.Context)
 		GetAll(ctx *gin.Context)
 		Update(ctx *gin.Context)
 		Delete(ctx *gin.Context)
@@ -99,6 +100,19 @@ func (c *userController) RefreshToken(ctx *gin.Context) {
 	}
 
 	res := presentation.BuildResponseSuccess(message.SuccessRefreshToken, result)
+	ctx.JSON(http.StatusOK, res)
+}
+
+func (c *userController) Logout(ctx *gin.Context) {
+	userID := ctx.MustGet("user_id").(string)
+
+	if err := c.userService.RevokeRefreshToken(ctx.Request.Context(), userID); err != nil {
+		res := presentation.BuildResponseFailed(message.FailedLogout, err.Error(), nil)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, res)
+		return
+	}
+
+	res := presentation.BuildResponseSuccess(message.SuccessLogout, nil)
 	ctx.JSON(http.StatusOK, res)
 }
 

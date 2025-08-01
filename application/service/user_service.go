@@ -313,7 +313,7 @@ func (s *userService) RefreshToken(ctx context.Context, req request.RefreshToken
 
 	retrievedRefreshToken, err := s.refreshTokenRepository.FindByUserID(ctx, tx, req.UserID)
 	if err != nil {
-		return response.RefreshToken{}, user.ErrorUserNotFound
+		return response.RefreshToken{}, refresh_token.ErrorThisUserRefreshTokenNotFound
 	}
 
 	if !refresh_token.IsRefreshTokenMatch(req.RefreshToken, retrievedRefreshToken.Token) {
