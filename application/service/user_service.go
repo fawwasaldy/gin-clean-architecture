@@ -260,7 +260,7 @@ func (s *userService) Verify(ctx context.Context, req request.UserLogin) (respon
 
 	checkPassword, err := retrievedUser.Password.IsPasswordMatch([]byte(req.Password))
 	if err != nil || !checkPassword {
-		return response.RefreshToken{}, err
+		return response.RefreshToken{}, refresh_token.ErrorPasswordNotMatch
 	}
 
 	accessToken := s.jwtService.GenerateAccessToken(retrievedUser.ID.String(), retrievedUser.Role.Name)
