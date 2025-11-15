@@ -4,10 +4,10 @@
     A robust and scalable Go application built with the Gin framework, showcasing a practical implementation of Clean Architecture principles.
   </p>
   <p>
-    <a href="https://golang.org/"><img src="https://img.shields.io/badge/Go-1.24+-00ADD8?style=for-the-badge&logo=go" alt="Go"></a>
-    <a href="https://gin-gonic.com/"><img src="https://img.shields.io/badge/Gin-v1.10.1-007ACC?style=for-the-badge&logo=gin" alt="Gin"></a>
-    <a href="https://gorm.io/"><img src="https://img.shields.io/badge/GORM-v1.30-9B59B6?style=for-the-badge&logo=gorm" alt="GORM"></a>
-    <a href="https://www.postgresql.org/"><img src="https://img.shields.io/badge/PostgreSQL-16-336791?style=for-the-badge&logo=postgresql" alt="PostgreSQL"></a>
+    <a href="https://golang.org/"><img src="https://img.shields.io/badge/Go-1.25+-00ADD8?style=for-the-badge&logo=go" alt="Go"></a>
+    <a href="https://gin-gonic.com/"><img src="https://img.shields.io/badge/Gin-v1.11.0-007ACC?style=for-the-badge&logo=gin" alt="Gin"></a>
+    <a href="https://gorm.io/"><img src="https://img.shields.io/badge/GORM-v1.31-9B59B6?style=for-the-badge&logo=gorm" alt="GORM"></a>
+    <a href="https://www.postgresql.org/"><img src="https://img.shields.io/badge/PostgreSQL-18-336791?style=for-the-badge&logo=postgresql" alt="PostgreSQL"></a>
   </p>
 </div>
 
@@ -62,35 +62,38 @@ This project is structured around the principles of **Clean Architecture**, whic
 
 ## 📂 Project Structure
 
-The repository is organized to reflect the Clean Architecture layers, making it easy to navigate and understand.
+The repository is organized to reflect the Clean Architecture layers and follows the standard Go project layout, making it easy to navigate and understand.
+
+Core application code is placed within the `internal/` directory to enforce privacy and prevent external projects from importing it.
 
 ```
 .
-├── 📁 application/      # Application Layer: Use Cases/Services
-│   ├── request/
-│   └── response/
-│   └── service/
-├── 📁 command/           # CLI commands (e.g., migrations)
-├── 📁 domain/            # Domain Layer: Entities & Core Logic
-│   ├── identity/
-│   ├── port/
-│   ├── refresh_token/
-│   ├── shared/
-│   └── user/
-├── 📁 infrastructure/    # Infrastructure Layer: DB, Adapters
-│   ├── adapter/
-│   └── database/
-├── 📁 platform/          # Shared platform utilities (e.g., pagination)
-├── 📁 presentation/      # Presentation Layer: Controllers, Routes
-│   ├── controller/
-│   ├── message/
-│   ├── middleware/
-│   └── route/
-├── assets/              # Static assets (e.g., uploaded images)
-├── logs/                # Log files
-├── .env.example         # Example environment variables
-├── go.mod               # Go module dependencies
-├── main.go              # Application entry point
+├── internal/
+│   ├── application/
+│   │   ├── request/
+│   │   ├── response/
+│   │   └── service/
+│   ├── domain/
+│   │   ├── identity/
+│   │   ├── port/
+│   │   ├── refresh_token/
+│   │   ├── shared/
+│   │   └── user/
+│   ├── infrastructure/
+│   │   ├── adapter/
+│   │   └── database/
+│   └── presentation/
+│       ├── controller/
+│       ├── message/
+│       ├── middleware/
+│       └── route/
+├── command/
+├── platform/
+├── assets/
+├── logs/
+├── .env.example
+├── go.mod
+├── main.go
 └── README.md
 ```
 
@@ -102,7 +105,7 @@ Follow these steps to get the project up and running on your local machine.
 
 ### Prerequisites
 
--   [Go](https://golang.org/dl/) (version 1.24 or newer)
+-   [Go](https://golang.org/dl/) (version 1.25 or newer)
 -   [PostgreSQL](https://www.postgresql.org/download/)
 -   [Git](https://git-scm.com/downloads)
 
@@ -110,7 +113,7 @@ Follow these steps to get the project up and running on your local machine.
 
 1.  **Clone the Repository:**
     ```bash
-    git clone https://github.com/fawwasaldy/gin-clean-architecture.git
+    git clone [https://github.com/fawwasaldy/gin-clean-architecture.git](https://github.com/fawwasaldy/gin-clean-architecture.git)
     cd gin-clean-architecture
     ```
 
@@ -190,4 +193,3 @@ Contributions are welcome! If you have suggestions for improvements or find a bu
 ## 📄 License
 
 This project is open-source and available under the [MIT License](LICENSE).
-
