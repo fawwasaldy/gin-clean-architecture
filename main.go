@@ -11,10 +11,11 @@ import (
 	"gin-clean-architecture/presentation/controller"
 	"gin-clean-architecture/presentation/middleware"
 	"gin-clean-architecture/presentation/route"
-	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 	"log"
 	"os"
+
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 func args(db *gorm.DB) bool {

@@ -4,9 +4,10 @@ import (
 	"gin-clean-architecture/application/service"
 	"gin-clean-architecture/presentation"
 	"gin-clean-architecture/presentation/message"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 func Authenticate(jwtService service.JWTService) gin.HandlerFunc {

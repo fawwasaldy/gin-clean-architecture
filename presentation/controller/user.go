@@ -6,8 +6,9 @@ import (
 	"gin-clean-architecture/platform/pagination"
 	"gin-clean-architecture/presentation"
 	"gin-clean-architecture/presentation/message"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type (

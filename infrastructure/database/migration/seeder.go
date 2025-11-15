@@ -2,6 +2,7 @@ package migration
 
 import (
 	"gin-clean-architecture/infrastructure/database/migration/seed"
+
 	"gorm.io/gorm"
 )
 

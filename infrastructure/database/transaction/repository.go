@@ -2,8 +2,9 @@ package transaction
 
 import (
 	"context"
-	"gorm.io/gorm"
 	"log"
+
+	"gorm.io/gorm"
 )
 
 type Repository struct {

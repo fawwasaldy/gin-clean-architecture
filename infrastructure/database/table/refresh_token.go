@@ -4,9 +4,10 @@ import (
 	"gin-clean-architecture/domain/identity"
 	"gin-clean-architecture/domain/refresh_token"
 	"gin-clean-architecture/domain/shared"
+	"time"
+
 	"github.com/google/uuid"
 	"gorm.io/gorm"
-	"time"
 )
 
 type RefreshToken struct {

@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"gin-clean-architecture/domain/identity"
 	"gin-clean-architecture/domain/shared"
-	"golang.org/x/crypto/bcrypt"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 const BcryptCost = 10
