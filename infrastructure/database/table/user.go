@@ -4,9 +4,10 @@ import (
 	"gin-clean-architecture/domain/identity"
 	"gin-clean-architecture/domain/shared"
 	"gin-clean-architecture/domain/user"
+	"time"
+
 	"github.com/google/uuid"
 	"gorm.io/gorm"
-	"time"
 )
 
 type User struct {

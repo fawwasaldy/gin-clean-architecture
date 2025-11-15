@@ -2,6 +2,7 @@ package validation
 
 import (
 	"gin-clean-architecture/infrastructure/database/transaction"
+
 	"gorm.io/gorm"
 )
 

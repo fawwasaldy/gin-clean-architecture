@@ -5,8 +5,9 @@ import (
 	"gin-clean-architecture/domain/user"
 	"gin-clean-architecture/infrastructure/database/migration/data"
 	"gin-clean-architecture/infrastructure/database/table"
-	"gorm.io/gorm"
 	"log"
+
+	"gorm.io/gorm"
 )
 
 func User(db *gorm.DB) error {

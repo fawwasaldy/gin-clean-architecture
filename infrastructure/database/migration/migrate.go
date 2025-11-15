@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"gin-clean-architecture/infrastructure/database/config"
 	"gin-clean-architecture/infrastructure/database/table"
-	"gorm.io/gorm"
 	"os"
+
+	"gorm.io/gorm"
 )
 
 var entities = []interface{}{

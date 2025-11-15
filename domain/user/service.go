@@ -3,8 +3,9 @@ package user
 import (
 	"fmt"
 	"gin-clean-architecture/domain/port"
-	"github.com/google/uuid"
 	"mime/multipart"
+
+	"github.com/google/uuid"
 )
 
 type Service struct {
