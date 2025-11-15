@@ -11,8 +11,9 @@ import (
 	"gin-clean-architecture/domain/user"
 	"gin-clean-architecture/infrastructure/database/validation"
 	"gin-clean-architecture/platform/pagination"
-	"gorm.io/gorm"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type (
@@ -222,7 +223,7 @@ func (s *userService) Delete(ctx context.Context, userID string) error {
 		validatedTransaction.CommitOrRollback(ctx, tx, err)
 	}()
 
-	retrievedUser, err := s.userRepository.GetUserByID(ctx, nil, userID)
+	retrievedUser, err := s.userRepository.GetUserByID(ctx, tx, userID)
 	if err != nil {
 		return user.ErrorUserNotFound
 	}
