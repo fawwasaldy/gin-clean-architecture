@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/fawwasaldy/gin-clean-architecture/infrastructure/database/migration"
+	"github.com/fawwasaldy/gin-clean-architecture/internal/infrastructure/database/migration"
 
 	"gorm.io/gorm"
 )
