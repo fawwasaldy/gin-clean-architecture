@@ -1,11 +1,12 @@
 package middleware
 
 import (
-	"gin-clean-architecture/application/service"
-	"gin-clean-architecture/presentation"
-	"gin-clean-architecture/presentation/message"
 	"net/http"
 	"strings"
+
+	"github.com/fawwasaldy/gin-clean-architecture/application/service"
+	"github.com/fawwasaldy/gin-clean-architecture/presentation"
+	"github.com/fawwasaldy/gin-clean-architecture/presentation/message"
 
 	"github.com/gin-gonic/gin"
 )

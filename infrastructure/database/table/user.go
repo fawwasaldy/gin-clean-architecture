@@ -1,10 +1,11 @@
 package table
 
 import (
-	"gin-clean-architecture/domain/identity"
-	"gin-clean-architecture/domain/shared"
-	"gin-clean-architecture/domain/user"
 	"time"
+
+	"github.com/fawwasaldy/gin-clean-architecture/domain/identity"
+	"github.com/fawwasaldy/gin-clean-architecture/domain/shared"
+	"github.com/fawwasaldy/gin-clean-architecture/domain/user"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"

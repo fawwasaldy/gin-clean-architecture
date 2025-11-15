@@ -1,9 +1,9 @@
 package route
 
 import (
-	"gin-clean-architecture/application/service"
-	"gin-clean-architecture/presentation/controller"
-	"gin-clean-architecture/presentation/middleware"
+	"github.com/fawwasaldy/gin-clean-architecture/application/service"
+	"github.com/fawwasaldy/gin-clean-architecture/presentation/controller"
+	"github.com/fawwasaldy/gin-clean-architecture/presentation/middleware"
 
 	"github.com/gin-gonic/gin"
 )

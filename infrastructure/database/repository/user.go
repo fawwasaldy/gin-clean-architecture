@@ -2,11 +2,12 @@ package repository
 
 import (
 	"context"
-	"gin-clean-architecture/domain/user"
-	"gin-clean-architecture/infrastructure/database/table"
-	"gin-clean-architecture/infrastructure/database/transaction"
-	"gin-clean-architecture/infrastructure/database/validation"
-	"gin-clean-architecture/platform/pagination"
+
+	"github.com/fawwasaldy/gin-clean-architecture/domain/user"
+	"github.com/fawwasaldy/gin-clean-architecture/infrastructure/database/table"
+	"github.com/fawwasaldy/gin-clean-architecture/infrastructure/database/transaction"
+	"github.com/fawwasaldy/gin-clean-architecture/infrastructure/database/validation"
+	"github.com/fawwasaldy/gin-clean-architecture/platform/pagination"
 )
 
 type userRepository struct {

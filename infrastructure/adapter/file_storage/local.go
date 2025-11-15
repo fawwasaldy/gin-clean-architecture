@@ -2,11 +2,12 @@ package file_storage
 
 import (
 	"fmt"
-	"gin-clean-architecture/domain/port"
 	"io"
 	"mime/multipart"
 	"os"
 	"strings"
+
+	"github.com/fawwasaldy/gin-clean-architecture/domain/port"
 )
 
 const Path = "assets"

@@ -1,9 +1,10 @@
 package command
 
 import (
-	"gin-clean-architecture/infrastructure/database/migration"
 	"log"
 	"os"
+
+	"github.com/fawwasaldy/gin-clean-architecture/infrastructure/database/migration"
 
 	"gorm.io/gorm"
 )

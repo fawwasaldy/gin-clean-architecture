@@ -2,7 +2,8 @@ package user
 
 import (
 	"context"
-	"gin-clean-architecture/platform/pagination"
+
+	"github.com/fawwasaldy/gin-clean-architecture/platform/pagination"
 )
 
 type (

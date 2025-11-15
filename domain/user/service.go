@@ -2,8 +2,9 @@ package user
 
 import (
 	"fmt"
-	"gin-clean-architecture/domain/port"
 	"mime/multipart"
+
+	"github.com/fawwasaldy/gin-clean-architecture/domain/port"
 
 	"github.com/google/uuid"
 )

@@ -3,15 +3,16 @@ package service
 import (
 	"context"
 	"errors"
-	"gin-clean-architecture/application"
-	"gin-clean-architecture/application/request"
-	"gin-clean-architecture/application/response"
-	"gin-clean-architecture/domain/refresh_token"
-	"gin-clean-architecture/domain/shared"
-	"gin-clean-architecture/domain/user"
-	"gin-clean-architecture/infrastructure/database/validation"
-	"gin-clean-architecture/platform/pagination"
 	"time"
+
+	"github.com/fawwasaldy/gin-clean-architecture/application"
+	"github.com/fawwasaldy/gin-clean-architecture/application/request"
+	"github.com/fawwasaldy/gin-clean-architecture/application/response"
+	"github.com/fawwasaldy/gin-clean-architecture/domain/refresh_token"
+	"github.com/fawwasaldy/gin-clean-architecture/domain/shared"
+	"github.com/fawwasaldy/gin-clean-architecture/domain/user"
+	"github.com/fawwasaldy/gin-clean-architecture/infrastructure/database/validation"
+	"github.com/fawwasaldy/gin-clean-architecture/platform/pagination"
 
 	"gorm.io/gorm"
 )

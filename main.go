@@ -1,18 +1,19 @@
 package main
 
 import (
-	"gin-clean-architecture/application/service"
-	"gin-clean-architecture/command"
-	"gin-clean-architecture/domain/user"
-	"gin-clean-architecture/infrastructure/adapter/file_storage"
-	"gin-clean-architecture/infrastructure/database/config"
-	"gin-clean-architecture/infrastructure/database/repository"
-	"gin-clean-architecture/infrastructure/database/transaction"
-	"gin-clean-architecture/presentation/controller"
-	"gin-clean-architecture/presentation/middleware"
-	"gin-clean-architecture/presentation/route"
 	"log"
 	"os"
+
+	"github.com/fawwasaldy/gin-clean-architecture/application/service"
+	"github.com/fawwasaldy/gin-clean-architecture/command"
+	"github.com/fawwasaldy/gin-clean-architecture/domain/user"
+	"github.com/fawwasaldy/gin-clean-architecture/infrastructure/adapter/file_storage"
+	"github.com/fawwasaldy/gin-clean-architecture/infrastructure/database/config"
+	"github.com/fawwasaldy/gin-clean-architecture/infrastructure/database/repository"
+	"github.com/fawwasaldy/gin-clean-architecture/infrastructure/database/transaction"
+	"github.com/fawwasaldy/gin-clean-architecture/presentation/controller"
+	"github.com/fawwasaldy/gin-clean-architecture/presentation/middleware"
+	"github.com/fawwasaldy/gin-clean-architecture/presentation/route"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
