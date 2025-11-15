@@ -113,7 +113,7 @@ Follow these steps to get the project up and running on your local machine.
 
 1.  **Clone the Repository:**
     ```bash
-    git clone [https://github.com/fawwasaldy/gin-clean-architecture.git](https://github.com/fawwasaldy/gin-clean-architecture.git)
+    git clone https://github.com/fawwasaldy/gin-clean-architecture.git
     cd gin-clean-architecture
     ```
 
