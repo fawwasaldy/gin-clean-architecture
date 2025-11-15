@@ -2,9 +2,10 @@ package refresh_token
 
 import (
 	"fmt"
-	"gin-clean-architecture/domain/identity"
-	"gin-clean-architecture/domain/shared"
 	"time"
+
+	"github.com/fawwasaldy/gin-clean-architecture/domain/identity"
+	"github.com/fawwasaldy/gin-clean-architecture/domain/shared"
 
 	"golang.org/x/crypto/bcrypt"
 )

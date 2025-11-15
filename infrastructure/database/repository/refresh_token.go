@@ -2,11 +2,12 @@ package repository
 
 import (
 	"context"
-	"gin-clean-architecture/domain/refresh_token"
-	"gin-clean-architecture/infrastructure/database/table"
-	"gin-clean-architecture/infrastructure/database/transaction"
-	"gin-clean-architecture/infrastructure/database/validation"
 	"time"
+
+	"github.com/fawwasaldy/gin-clean-architecture/domain/refresh_token"
+	"github.com/fawwasaldy/gin-clean-architecture/infrastructure/database/table"
+	"github.com/fawwasaldy/gin-clean-architecture/infrastructure/database/transaction"
+	"github.com/fawwasaldy/gin-clean-architecture/infrastructure/database/validation"
 )
 
 type refreshTokenRepository struct {

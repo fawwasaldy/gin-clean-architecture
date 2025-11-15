@@ -1,11 +1,12 @@
 package seed
 
 import (
-	"gin-clean-architecture/domain/shared"
-	"gin-clean-architecture/domain/user"
-	"gin-clean-architecture/infrastructure/database/migration/data"
-	"gin-clean-architecture/infrastructure/database/table"
 	"log"
+
+	"github.com/fawwasaldy/gin-clean-architecture/domain/shared"
+	"github.com/fawwasaldy/gin-clean-architecture/domain/user"
+	"github.com/fawwasaldy/gin-clean-architecture/infrastructure/database/migration/data"
+	"github.com/fawwasaldy/gin-clean-architecture/infrastructure/database/table"
 
 	"gorm.io/gorm"
 )

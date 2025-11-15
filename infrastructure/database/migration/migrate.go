@@ -2,9 +2,10 @@ package migration
 
 import (
 	"fmt"
-	"gin-clean-architecture/infrastructure/database/config"
-	"gin-clean-architecture/infrastructure/database/table"
 	"os"
+
+	"github.com/fawwasaldy/gin-clean-architecture/infrastructure/database/config"
+	"github.com/fawwasaldy/gin-clean-architecture/infrastructure/database/table"
 
 	"gorm.io/gorm"
 )

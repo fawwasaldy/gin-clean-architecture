@@ -1,6 +1,6 @@
 package data
 
-import "gin-clean-architecture/domain/user"
+import "github.com/fawwasaldy/gin-clean-architecture/domain/user"
 
 type UserSeed struct {
 	Name        string

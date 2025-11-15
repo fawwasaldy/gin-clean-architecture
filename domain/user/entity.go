@@ -1,8 +1,8 @@
 package user
 
 import (
-	"gin-clean-architecture/domain/identity"
-	"gin-clean-architecture/domain/shared"
+	"github.com/fawwasaldy/gin-clean-architecture/domain/identity"
+	"github.com/fawwasaldy/gin-clean-architecture/domain/shared"
 )
 
 type User struct {
