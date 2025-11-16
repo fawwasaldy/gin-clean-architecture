@@ -1,14 +1,19 @@
-package route
+package user
 
 import (
 	"github.com/fawwasaldy/gin-clean-architecture/internal/application/service"
 	"github.com/fawwasaldy/gin-clean-architecture/internal/presentation/controller"
 	"github.com/fawwasaldy/gin-clean-architecture/internal/presentation/middleware"
 	"github.com/gin-gonic/gin"
+	"github.com/samber/do/v2"
 )
 
-func UserRoute(route *gin.Engine, userController controller.UserController, jwtService service.JWTService) {
-	userGroup := route.Group("/api/user")
+func Route(injector do.Injector) {
+	baseRoute := do.MustInvoke[*gin.RouterGroup](injector)
+	jwtService := do.MustInvoke[service.JWTService](injector)
+	userController := do.MustInvoke[controller.UserController](injector)
+
+	userGroup := baseRoute.Group("/user")
 	{
 		userGroup.POST("/register", userController.Register)
 		userGroup.POST("/login", userController.Login)

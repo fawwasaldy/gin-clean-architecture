@@ -5,16 +5,12 @@ import (
 	"os"
 
 	"github.com/fawwasaldy/gin-clean-architecture/command"
-	"github.com/fawwasaldy/gin-clean-architecture/internal/application/service"
-	"github.com/fawwasaldy/gin-clean-architecture/internal/domain/user"
-	"github.com/fawwasaldy/gin-clean-architecture/internal/infrastructure/adapter/file_storage"
 	"github.com/fawwasaldy/gin-clean-architecture/internal/infrastructure/database/config"
-	"github.com/fawwasaldy/gin-clean-architecture/internal/infrastructure/database/repository"
-	"github.com/fawwasaldy/gin-clean-architecture/internal/infrastructure/database/transaction"
-	"github.com/fawwasaldy/gin-clean-architecture/internal/presentation/controller"
 	"github.com/fawwasaldy/gin-clean-architecture/internal/presentation/middleware"
 	"github.com/fawwasaldy/gin-clean-architecture/internal/presentation/route"
+	"github.com/fawwasaldy/gin-clean-architecture/platform/provider"
 	"github.com/gin-gonic/gin"
+	"github.com/samber/do/v2"
 	"gorm.io/gorm"
 )
 
@@ -52,21 +48,13 @@ func run(server *gin.Engine) {
 }
 
 func main() {
-	db := config.SetUpDatabaseConnection()
+	var (
+		injector = do.New()
+	)
 
-	jwtService := service.NewJWTService()
+	provider.RegisterDependencies(injector)
 
-	transactionRepository := transaction.NewRepository(db)
-	userRepository := repository.NewUserRepository(transactionRepository)
-	refreshTokenRepository := repository.NewRefreshTokenRepository(transactionRepository)
-
-	fileStorage := file_storage.NewLocalAdapter()
-
-	userDomainService := user.NewService(fileStorage)
-
-	userService := service.NewUserService(userRepository, refreshTokenRepository, *userDomainService, jwtService, transactionRepository)
-
-	userController := controller.NewUserController(userService)
+	db := do.MustInvoke[*gorm.DB](injector)
 
 	defer config.CloseDatabaseConnection(db)
 
@@ -77,7 +65,9 @@ func main() {
 	server := gin.Default()
 	server.Use(middleware.CORSMiddleware())
 
-	route.UserRoute(server, userController, jwtService)
+	do.ProvideValue(injector, server)
+
+	route.RegisterRoutes(injector)
 
 	run(server)
 }

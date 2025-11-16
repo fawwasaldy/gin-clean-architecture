@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/samber/do/v2"
 	"gorm.io/gorm"
 )
 
@@ -11,7 +12,8 @@ type Repository struct {
 	db *gorm.DB
 }
 
-func NewRepository(db *gorm.DB) *Repository {
+func NewRepository(injector do.Injector) *Repository {
+	db := do.MustInvoke[*gorm.DB](injector)
 	return &Repository{db: db}
 }
 

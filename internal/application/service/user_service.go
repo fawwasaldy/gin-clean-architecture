@@ -11,8 +11,9 @@ import (
 	"github.com/fawwasaldy/gin-clean-architecture/internal/domain/refresh_token"
 	"github.com/fawwasaldy/gin-clean-architecture/internal/domain/shared"
 	"github.com/fawwasaldy/gin-clean-architecture/internal/domain/user"
-	"github.com/fawwasaldy/gin-clean-architecture/internal/infrastructure/database/validation"
+	"github.com/fawwasaldy/gin-clean-architecture/internal/infrastructure/database/transaction"
 	"github.com/fawwasaldy/gin-clean-architecture/platform/pagination"
+	"github.com/samber/do/v2"
 
 	"gorm.io/gorm"
 )
@@ -33,25 +34,23 @@ type (
 	userService struct {
 		userRepository         user.Repository
 		refreshTokenRepository refresh_token.Repository
-		userDomainService      user.Service
+		userDomainService      *user.Service
 		jwtService             JWTService
-		transaction            interface{}
+		injector               do.Injector
 	}
 )
 
-func NewUserService(
-	userRepository user.Repository,
-	refreshTokenRepository refresh_token.Repository,
-	userDomainService user.Service,
-	jwtService JWTService,
-	transaction interface{},
-) UserService {
+func NewUserService(injector do.Injector) UserService {
+	userRepository := do.MustInvoke[user.Repository](injector)
+	refreshTokenRepository := do.MustInvoke[refresh_token.Repository](injector)
+	userDomainService := do.MustInvoke[*user.Service](injector)
+	jwtService := do.MustInvoke[JWTService](injector)
 	return &userService{
 		userRepository:         userRepository,
 		refreshTokenRepository: refreshTokenRepository,
 		userDomainService:      userDomainService,
 		jwtService:             jwtService,
-		transaction:            transaction,
+		injector:               injector,
 	}
 }
 
@@ -207,12 +206,9 @@ func (s *userService) Update(ctx context.Context, userID string, req request.Use
 }
 
 func (s *userService) Delete(ctx context.Context, userID string) error {
-	validatedTransaction, err := validation.ValidateTransaction(s.transaction)
-	if err != nil {
-		return err
-	}
+	transactionRepository := do.MustInvoke[*transaction.Repository](s.injector)
 
-	tx, err := validatedTransaction.Begin(ctx)
+	tx, err := transactionRepository.Begin(ctx)
 	if err != nil {
 		return err
 	}
@@ -221,7 +217,7 @@ func (s *userService) Delete(ctx context.Context, userID string) error {
 		if r := recover(); r != nil {
 			err = application.RecoveredFromPanic(r)
 		}
-		validatedTransaction.CommitOrRollback(ctx, tx, err)
+		transactionRepository.CommitOrRollback(ctx, tx, err)
 	}()
 
 	retrievedUser, err := s.userRepository.GetUserByID(ctx, tx, userID)
@@ -238,12 +234,9 @@ func (s *userService) Delete(ctx context.Context, userID string) error {
 }
 
 func (s *userService) Verify(ctx context.Context, req request.UserLogin) (response.RefreshToken, error) {
-	validatedTransaction, err := validation.ValidateTransaction(s.transaction)
-	if err != nil {
-		return response.RefreshToken{}, err
-	}
+	transactionRepository := do.MustInvoke[*transaction.Repository](s.injector)
 
-	tx, err := validatedTransaction.Begin(ctx)
+	tx, err := transactionRepository.Begin(ctx)
 	if err != nil {
 		return response.RefreshToken{}, err
 	}
@@ -252,7 +245,7 @@ func (s *userService) Verify(ctx context.Context, req request.UserLogin) (respon
 		if r := recover(); r != nil {
 			err = application.RecoveredFromPanic(r)
 		}
-		validatedTransaction.CommitOrRollback(ctx, tx, err)
+		transactionRepository.CommitOrRollback(ctx, tx, err)
 	}()
 
 	retrievedUser, err := s.userRepository.GetUserByEmail(ctx, tx, req.Email)
@@ -296,12 +289,9 @@ func (s *userService) Verify(ctx context.Context, req request.UserLogin) (respon
 }
 
 func (s *userService) RefreshToken(ctx context.Context, req request.RefreshToken) (response.RefreshToken, error) {
-	validatedTransaction, err := validation.ValidateTransaction(s.transaction)
-	if err != nil {
-		return response.RefreshToken{}, err
-	}
+	transactionRepository := do.MustInvoke[*transaction.Repository](s.injector)
 
-	tx, err := validatedTransaction.Begin(ctx)
+	tx, err := transactionRepository.Begin(ctx)
 	if err != nil {
 		return response.RefreshToken{}, err
 	}
@@ -310,7 +300,7 @@ func (s *userService) RefreshToken(ctx context.Context, req request.RefreshToken
 		if r := recover(); r != nil {
 			err = application.RecoveredFromPanic(r)
 		}
-		validatedTransaction.CommitOrRollback(ctx, tx, err)
+		transactionRepository.CommitOrRollback(ctx, tx, err)
 	}()
 
 	retrievedRefreshToken, err := s.refreshTokenRepository.FindByUserID(ctx, tx, req.UserID)
@@ -362,12 +352,9 @@ func (s *userService) RefreshToken(ctx context.Context, req request.RefreshToken
 }
 
 func (s *userService) RevokeRefreshToken(ctx context.Context, userID string) error {
-	validatedTransaction, err := validation.ValidateTransaction(s.transaction)
-	if err != nil {
-		return err
-	}
+	transactionRepository := do.MustInvoke[*transaction.Repository](s.injector)
 
-	tx, err := validatedTransaction.Begin(ctx)
+	tx, err := transactionRepository.Begin(ctx)
 	if err != nil {
 		return err
 	}
@@ -376,7 +363,7 @@ func (s *userService) RevokeRefreshToken(ctx context.Context, userID string) err
 		if r := recover(); r != nil {
 			err = application.RecoveredFromPanic(r)
 		}
-		validatedTransaction.CommitOrRollback(ctx, tx, err)
+		transactionRepository.CommitOrRollback(ctx, tx, err)
 	}()
 
 	_, err = s.userRepository.GetUserByID(ctx, tx, userID)

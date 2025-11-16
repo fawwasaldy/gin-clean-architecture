@@ -5,6 +5,7 @@ import (
 	"mime/multipart"
 
 	"github.com/fawwasaldy/gin-clean-architecture/internal/domain/port"
+	"github.com/samber/do/v2"
 
 	"github.com/google/uuid"
 )
@@ -13,7 +14,8 @@ type Service struct {
 	fileStorage port.FileStoragePort
 }
 
-func NewService(fileStorage port.FileStoragePort) *Service {
+func NewService(injector do.Injector) *Service {
+	fileStorage := do.MustInvoke[port.FileStoragePort](injector)
 	return &Service{
 		fileStorage: fileStorage,
 	}
