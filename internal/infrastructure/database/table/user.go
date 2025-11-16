@@ -14,7 +14,7 @@ import (
 type User struct {
 	ID          uuid.UUID      `gorm:"type:uuid;primary_key;default:uuid_generate_v4();column:id"`
 	Name        string         `gorm:"type:varchar(100);not null;column:name"`
-	Email       string         `gorm:"type:varchar(255);uniqueIndex;not null;column:email"`
+	Email       string         `gorm:"type:varchar(255);uniqueIndex:idx_users_email_deleted_at;not null;column:email"`
 	PhoneNumber string         `gorm:"type:varchar(20);index;column:phone_number"`
 	Password    string         `gorm:"type:varchar(255);not null;column:password"`
 	Role        string         `gorm:"type:varchar(50);not null;default:'user';column:role"`
@@ -22,7 +22,7 @@ type User struct {
 	IsVerified  bool           `gorm:"default:false;column:is_verified"`
 	CreatedAt   time.Time      `gorm:"type:timestamp with time zone;column:created_at"`
 	UpdatedAt   time.Time      `gorm:"type:timestamp with time zone;column:updated_at"`
-	DeletedAt   gorm.DeletedAt `gorm:"type:timestamp with time zone;column:deleted_at"`
+	DeletedAt   gorm.DeletedAt `gorm:"type:timestamp with time zone;column:deleted_at;uniqueIndex:idx_users_email_deleted_at"`
 }
 
 func UserEntityToTable(entity user.User) User {

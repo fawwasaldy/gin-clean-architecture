@@ -14,11 +14,11 @@ import (
 type RefreshToken struct {
 	ID        uuid.UUID      `gorm:"primaryKey;type:uuid;default:uuid_generate_v4();column:id"`
 	UserID    uuid.UUID      `gorm:"type:uuid;not null;column:user_id"`
-	Token     string         `gorm:"type:varchar(255);not null;uniqueIndex;column:token"`
+	Token     string         `gorm:"type:varchar(255);not null;uniqueIndex:idx_refresh_tokens_token_deleted_at;column:token"`
 	ExpiresAt time.Time      `gorm:"type:timestamp with time zone;not null;column:expires_at"`
 	CreatedAt time.Time      `gorm:"type:timestamp with time zone;column:created_at"`
 	UpdatedAt time.Time      `gorm:"type:timestamp with time zone;column:updated_at"`
-	DeletedAt gorm.DeletedAt `gorm:"type:timestamp with time zone;column:deleted_at"`
+	DeletedAt gorm.DeletedAt `gorm:"type:timestamp with time zone;column:deleted_at;uniqueIndex:idx_refresh_tokens_token_deleted_at"`
 
 	User *User `gorm:"foreignKey:UserID"`
 }
