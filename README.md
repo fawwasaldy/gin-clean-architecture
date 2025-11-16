@@ -42,7 +42,6 @@ This project is structured around the principles of **Clean Architecture**, whic
 -   🔐 **Secure Authentication**: JWT-based authentication with Access and Refresh Tokens.
 -   🛡️ **Authorization**: Middleware for protecting routes and managing access control.
 -   🗄️ **Database Integration**: Seamless data persistence with GORM and PostgreSQL.
--   ⚙️ **Automatic Migrations**: Keep your database schema in sync with your models automatically.
 -   📦 **Transactional Integrity**: Ensures data consistency for critical operations.
 -   📄 **Query Logging**: A beautiful web interface to monitor and review database queries, organized by month.
 -   🖼️ **File Uploads**: Handles user profile image uploads to local storage.
@@ -57,6 +56,69 @@ This project is structured around the principles of **Clean Architecture**, whic
 -   **ORM**: GORM
 -   **Authentication**: JWT (JSON Web Tokens)
 -   **UUID**: Google UUID
+
+---
+
+## ⚙️ Dependency Injection with `samber/do`
+
+This project uses the **samber/do** library for Dependency Injection (DI). DI helps us manage dependencies between components (like services, repositories, and controllers), making the code loosely coupled, more testable, and easier to maintain.
+
+### When Should We Use DI?
+
+You should use DI whenever one component needs a "service" provided by another component. Instead of the component creating its own dependency (e.g., `NewUserService` creating `NewUserRepository`), it should *receive* the dependency from a central "injector". This follows the **Inversion of Control (IoC)** principle.
+
+### Where Are Dependencies Registered?
+
+All dependency registrations are centralized in the `platform/provider/` directory.
+
+-   **`platform/provider/provider.go`**: Registers global dependencies like the database (`*gorm.DB`), `JWTService`, and `TransactionRepository`. It also calls the modular providers.
+-   **`platform/provider/adapter.go`**: Registers adapter implementations for domain ports (e.g., `port.FileStoragePort`).
+-   **`platform/provider/user/provider.go`**: A feature-specific provider that registers all components related to the User feature (Controller, Service, Repository).
+
+This entire registration process is initiated once in `main.go`.
+
+### How to Use and Invoke Dependencies
+
+#### 1. How to Register (Provide) a Dependency
+
+To register a new service, add it to the appropriate provider file using `do.Provide`. The provider function should return the service interface and an error.
+
+**Example (Registering `UserService`):**
+```go
+// in platform/provider/user/provider.go
+func RegisterDependencies(injector do.Injector) {
+    // ...
+	do.Provide(injector, func(injector do.Injector) (service.UserService, error) {
+		return service.NewUserService(injector), nil
+	})
+    // ...
+}
+```
+
+#### 2. How to Use (Invoke) a Dependency
+
+To get a dependency inside a component, add `do.Injector` as a parameter to its constructor (e.g., `NewUserService`). Then, use `do.MustInvoke[DependencyType](injector)` to retrieve the required service.
+
+**Example (Inside NewUserService):**
+```go
+// in internal/application/service/user_service.go
+func NewUserService(injector do.Injector) UserService {
+    // Invoke dependencies from the injector 
+	userRepository := do.MustInvoke[user.Repository](injector)
+	refreshTokenRepository := do.MustInvoke[refresh_token.Repository](injector)
+	userDomainService := do.MustInvoke[*user.Service](injector)
+	jwtService := do.MustInvoke[JWTService](injector)
+
+    // Return the struct populated with resolved dependencies 
+	return &userService{
+		userRepository:         userRepository, 
+		refreshTokenRepository: refreshTokenRepository, 
+		userDomainService:      userDomainService, 
+		jwtService:             jwtService, 
+		injector:               injector, // Store injector if needed for transactions 
+	}
+}
+```
 
 ---
 
