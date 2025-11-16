@@ -1,0 +1,32 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    container_name: ${APP_NAME:-gin-clean-architecture}-app
+    volumes: 
+      - .:/app
+    ports:
+      - ${GOLANG_PORT:-8888}:8888
+    networks:
+      - app-network
+  
+  nginx:
+    image: nginx:latest
+    container_name: ${APP_NAME:-gin-clean-architecture}-nginx
+    ports:
+      - ${NGINX_PORT:-81}:80
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx/default.conf:/etx/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - app-network
+
+volumes:
+  app-data:
+
+networks:
+  app-network:
+    driver: bridge
