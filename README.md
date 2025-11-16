@@ -54,6 +54,7 @@ This project is structured around the principles of **Clean Architecture**, whic
 -   **Web Framework**: Gin
 -   **Database**: PostgreSQL
 -   **ORM**: GORM
+-   **Dependency Injection**: samber/do
 -   **Authentication**: JWT (JSON Web Tokens)
 -   **UUID**: Google UUID
 
@@ -219,6 +220,65 @@ Follow these steps to get the project up and running on your local machine.
     go run main.go
     ```
     The server will be live at `http://localhost:8888`.
+
+---
+
+## 🐳 Running with Docker (Development)
+
+This project is fully configured for Docker-based development using Docker Compose and `air` for live hot-reloading. The `Makefile` provides convenient commands to manage the Docker environment.
+
+### Prerequisites
+
+* Docker
+* Docker Compose
+* `make` (Recommended to use the `Makefile` shortcuts)
+
+### 1. Configure Environment
+
+Copy the environment example file.
+
+```bash
+  cp .env.example .env
+```
+
+**Important:** The default `docker-compose.yml` does not include a database. If you add a PostgreSQL service to your `docker-compose.yml` (e.g., named `postgres-db`), you **must** change `DB_HOST` in your `.env` file from `localhost` to the name of that service:
+`DB_HOST=postgres-db`
+
+### 2. Build and Start Services
+
+This command will build the Docker images for the `app` (Go) and `nginx` services and start them in detached mode.
+
+```bash
+  make init-docker
+```
+
+The application will be accessible at `http://localhost:${NGINX_PORT}` (defaulting to port 81).
+
+### 3. Common Docker Commands
+
+The `Makefile` provides simple aliases for common operations:
+
+* **`make up`**: Start the services if they are already built and stopped.
+* **`make down`**: Stop and remove all running containers and networks.
+* **`make logs`**: View the real-time, streaming logs from all services (especially useful for the `app`).
+
+### 4. Running Migrations and Seeds (via Docker)
+
+To run database commands, you must execute them *inside* the running `app` container. The `Makefile` simplifies this:
+
+* **`make migrate`**: Run database migrations.
+* **`make seed`**: Seed the database with initial data.
+* **`make migrate-seed`**: Run both migrations and seeders.
+* **`make rollback`**: Roll back the last database migration.
+
+### 5. Utility Commands
+
+* **`make container-go`**: Get a shell (`/bin/sh`) inside the `app` container for debugging or manual commands.
+* **`make go-tidy`**: Run `go mod tidy` inside the container to update dependencies.
+
+### 6. Hot Reloading
+
+The development container uses **air** to watch for file changes. When you save any `.go` file, the application will automatically rebuild and restart inside the container.
 
 ---
 
