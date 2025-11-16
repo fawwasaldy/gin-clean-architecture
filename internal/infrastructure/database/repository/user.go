@@ -8,13 +8,15 @@ import (
 	"github.com/fawwasaldy/gin-clean-architecture/internal/infrastructure/database/transaction"
 	"github.com/fawwasaldy/gin-clean-architecture/internal/infrastructure/database/validation"
 	"github.com/fawwasaldy/gin-clean-architecture/platform/pagination"
+	"github.com/samber/do/v2"
 )
 
 type userRepository struct {
 	db *transaction.Repository
 }
 
-func NewUserRepository(db *transaction.Repository) user.Repository {
+func NewUserRepository(injector do.Injector) user.Repository {
+	db := do.MustInvoke[*transaction.Repository](injector)
 	return &userRepository{db: db}
 }
 

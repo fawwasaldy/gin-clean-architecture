@@ -8,13 +8,15 @@ import (
 	"github.com/fawwasaldy/gin-clean-architecture/internal/infrastructure/database/table"
 	"github.com/fawwasaldy/gin-clean-architecture/internal/infrastructure/database/transaction"
 	"github.com/fawwasaldy/gin-clean-architecture/internal/infrastructure/database/validation"
+	"github.com/samber/do/v2"
 )
 
 type refreshTokenRepository struct {
 	db *transaction.Repository
 }
 
-func NewRefreshTokenRepository(db *transaction.Repository) refresh_token.Repository {
+func NewRefreshTokenRepository(injector do.Injector) refresh_token.Repository {
+	db := do.MustInvoke[*transaction.Repository](injector)
 	return &refreshTokenRepository{db: db}
 }
 

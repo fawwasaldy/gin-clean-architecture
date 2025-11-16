@@ -9,6 +9,7 @@ import (
 	"github.com/fawwasaldy/gin-clean-architecture/platform/pagination"
 	"github.com/fawwasaldy/gin-clean-architecture/platform/response"
 	"github.com/gin-gonic/gin"
+	"github.com/samber/do/v2"
 )
 
 type (
@@ -28,7 +29,8 @@ type (
 	}
 )
 
-func NewUserController(userService service.UserService) UserController {
+func NewUserController(injector do.Injector) UserController {
+	userService := do.MustInvoke[service.UserService](injector)
 	return &userController{
 		userService: userService,
 	}
