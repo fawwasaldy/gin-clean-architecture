@@ -8,4 +8,4 @@ COPY . .
 
 RUN go mod tidy
 
-CMD ["air"]
+CMD ["air", "-c", "docker/.air.toml"]
