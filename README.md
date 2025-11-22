@@ -55,6 +55,7 @@ This project is structured around the principles of **Clean Architecture**, whic
 -   **Database**: PostgreSQL
 -   **ORM**: GORM
 -   **Dependency Injection**: samber/do
+-   **Live Reload**: Air
 -   **Authentication**: JWT (JSON Web Tokens)
 -   **UUID**: Google UUID
 
@@ -171,6 +172,7 @@ Follow these steps to get the project up and running on your local machine.
 -   [Go](https://golang.org/dl/) (version 1.25 or newer)
 -   [PostgreSQL](https://www.postgresql.org/download/)
 -   [Git](https://git-scm.com/downloads)
+-   [Air](https://github.com/air-verse/air) (Optional, for hot reloading)
 
 ### Installation & Setup
 
@@ -215,10 +217,25 @@ Follow these steps to get the project up and running on your local machine.
     ```
 
 5.  **Start the Server:**
-    Use this command to launch the application.
+    You have two options to start the server:
+
+    **Option A: Standard Run**
     ```bash
     go run main.go
     ```
+
+    **Option B: Hot Reloading with Air (Recommended)**
+
+    If you want the application to automatically restart when you change code, ensure you have `air` installed:
+    ```bash
+    go install github.com/air-verse/air@latest
+    ```
+
+    Then run:
+    ```bash
+    air
+    ```
+    
     The server will be live at `http://localhost:8888`.
 
 ---
