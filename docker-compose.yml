@@ -8,6 +8,8 @@ services:
       - .:/app
     ports:
       - ${GOLANG_PORT:-8888}:8888
+    depends_on:
+      - postgres
     networks:
       - app-network
   
@@ -18,9 +20,25 @@ services:
       - ${NGINX_PORT:-81}:80
     volumes:
       - .:/var/www/html
-      - ./docker/nginx/default.conf:/etx/nginx/conf.d/default.conf
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - app
+    networks:
+      - app-network
+
+  postgres:
+    hostname: postgres
+    container_name: ${APP_NAME:-gin-clean-architecture}-db
+    image: postgres:latest
+    ports:
+      - ${DB_PORT}:5432
+    volumes:
+      - ./docker/postgresql/tmp:/var/lib/postgresql
+      - app-data:/var/lib/postgresql
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
     networks:
       - app-network
 
