@@ -30,13 +30,13 @@ init-docker:
 	docker compose up -d --build
 
 up: 
-	docker-compose up -d
+	docker compose up -d
 
 down:
-	docker-compose down
+	docker compose down
 
 logs:
-	docker-compose logs -f
+	docker compose logs -f
 
 # Postgres commands
 container-postgres:
