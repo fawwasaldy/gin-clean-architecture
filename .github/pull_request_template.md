@@ -2,7 +2,7 @@
 
 Please include a summary of the changes and the related issue.  
 
-Fixes #(issue)
+Closes #(issue)
 
 ## Type of change
 
